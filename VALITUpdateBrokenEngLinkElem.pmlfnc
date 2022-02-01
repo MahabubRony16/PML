@@ -1,0 +1,58 @@
+define function !!VALITUpdateBrokenEngLinkElem(!selectedElem is dbref)
+	if !selectedElem.type eq 'PIPE' or !selectedElem.type eq 'HVAC' or !selectedElem.type eq 'ZONE' or !selectedElem.type eq 'SITE' then
+		!elements = !!collectallfor('PIPE HVAC EQUI', '' , !selectedElem) 
+		if not (!elements.empty()) then
+			!stat = array()
+			do !element values !elements
+				!linked = !!VALITUpdateEnglnk(!element)
+				!stat.append(!linked)
+				!branches = !!collectallfor('BRAN', 'NOT UNSET(:ComosUID)' , !element)
+				do !branch values !branches
+					!linked = !!VALITUpdateEnglnk(!branch)
+					!stat.append(!linked)
+				enddo
+			enddo
+		endif
+	else
+		VAR !deselem BRAN for $!selectedElem
+		handle (2,111)
+			VAR !deselem EQUI for $!selectedElem
+			handle (2,111)
+			elsehandle none
+				if not !deselem.dbref().:ComosUID.empty() then
+					!linked = !!VALITUpdateEnglnk(!deselem.dbref())
+					!stat[1] = !linked
+				endif
+			endhandle
+		elsehandle none
+			if not !deselem.dbref().:ComosUID.empty() then
+				!linked = !!VALITUpdateEnglnk(!deselem.dbref())
+				!stat[1] = !linked
+			endif
+		endhandle
+	endif
+	----------------------------
+	
+	$P ----------------------------------------------
+	if def(!stat) then
+		!tru = 0
+		!fal = 0
+		do !s values !stat
+			if !s then
+				!tru = !tru + 1
+			else
+				!fal = !fal + 1
+			endif
+		enddo
+		!statsize = !stat.size()
+		if !stat.size() gt 1 and !fal eq 0 then
+			$P All links have been created successfully ($!tru out of $!statsize)
+		else
+			$P Link created: $!tru (out of $!statsize)
+		endif
+	else
+		$P No elements to be linked
+	endif
+	$P ----------------------------------------------
+	
+endfunction
