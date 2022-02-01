@@ -1,0 +1,98 @@
+define function !!VALITUpdateEnglnk(!element is Dbref) is boolean
+	if (!element.type eq 'PIPE' or !element.type eq 'BRAN' or !element.type eq 'HVAC' or !element.type eq 'EQUI') and (!element.englnk.badref() eq true) and not (!element.:ComosUID.empty()) then
+		!comName = !element.:ComosUID
+		handle any
+			$P ERROR!! Unable to create link for $!element.type $!element.name
+			return false
+		elsehandle none
+			if (!element.type eq 'PIPE' or !element.type eq 'HVAC' or !element.type eq 'EQUI') then
+				!desMachId = !element.owner.owner.:MPTMACHID
+			else
+				!desMachId = !element.owner.owner.owner.:MPTMACHID
+			endif
+			!engElem = '/VALIT' + '$!element.type' + '-' + '$!comName'
+			if !element.type eq 'BRAN' and !element.owner.type eq 'HVAC' then
+				!engElem = '/VALITHVAC' + '$!element.type' + '-' + '$!comName'
+			endif
+			var !check EXISTS $!engElem
+			if !check eq 'FALSEA' then
+				!engElems = !!collectallfor('ENGITE', ':VALITCOMOSSYSUID eq |$!comName|' , world)
+				if !engElems.size() eq 1 then
+					!check = 'TRUEA'
+					!engElemRef = !engElems[1]
+				elseif !engElems.size() gt 1 then
+					$P Found more than one engineering element with same ComosUID for $!element.type $!element.name
+				endif
+			else
+				!engElemRef = !engElem.dbref()
+			endif
+			if !check eq 'TRUEA' then
+				!engPLabel = !engElemRef.:VALITPLABEL
+				!desName = !element.Name.After('/')
+				if (|$!engPLabel| eq |$!desName|) then
+					!engItemEquiId = !engElemRef.:VALITPROJREF.:VALITEQUIID.flnn
+					handle any
+						$P ERROR!! Unable to create link for $!element.type $!element.name
+						return false
+					endhandle
+					if !desMachId eq !engItemEquiId then
+						var !cymLn collect all CYMLNK with DESLNK[1] eq !element
+						if not !cymLn.empty()then
+							!cymLndbrf = !cymLn[1].dbref()
+							!cymLndbrf.EngLnk = !engElemRef
+							handle any
+								$P ERROR!! Unable to create link for $!element.type $!element.name
+								return false
+							elsehandle none
+								$P Link has been created successfully for $!element.type $!element.name
+								return true
+							endhandle
+						else
+							var !cymLn collect all CYMLNK with ENGLNK eq !engElemRef
+							if not !cymLn.empty() then
+								if !cymLn[1].dbref().DesLnk[1].badref() then
+									!cymLndbrf = !cymLn[1].dbref()
+									!cymLndbrf.DesLnk[1] = !element
+									handle any
+										$P ERROR!! Unable to create link for $!element.type $!element.name
+										return false
+									elsehandle none
+										$P Link has been created successfully for $!element.type $!element.name
+										return true
+									endhandle
+								else
+									$P ERROR!! Unable to create link for $!element.type $!element.name
+								endif
+							else
+								/General_Integration_Links
+								NEW CYMLNK
+								handle any
+									$P ERROR!! Unable to create link for $!element.type $!element.name
+									return false
+								elsehandle none
+									CMPSTATUS UPDDES
+									DESLNK $!element
+									ENGLNK $!engElemRef
+									$P Link has been created successfully for $!element.type $!element.name
+									return true
+								endhandle
+								
+							endif
+						endif
+					else
+						$P ERROR!! Unable to create link for $!element.type $!element.name
+					endif
+				else
+					$P ERROR!! Unable to create link for $!element.type $!element.name
+				endif
+			else
+				$P ERROR!! Unable to create link for $!element.type $!element.name
+			endif
+		endhandle
+	elseif (!element.type eq 'PIPE' or !element.type eq 'BRAN' or !element.type eq 'HVAC' or !element.type eq 'EQUI') and (!element.englnk.badref() eq false) and not (!element.:ComosUID.empty()) then
+		$P Link already exists for $!element.type $!element.name
+	else
+		$P ComosUID not exists for $!element.type $!element.name
+	endif
+	return false
+endfunction
