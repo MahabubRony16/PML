@@ -1,0 +1,1058 @@
+==============================================================================================
+EQUI /LW8_NEW_TEST
+
+Rules
+  none
+==============================================================================================
+SUBE /LW8_NEW_TEST/HEADERS
+
+Rules
+  none
+==============================================================================================
+CYLI =9212/342015
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342016
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( - ATTRIB DESP[2 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342017
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( -1 * ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) ) U ( ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342018
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( - ATTRIB DESP[2 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342019
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) + ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( - ATTRIB DESP[2 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342020
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342021
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[2 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( -1 * ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( ATTRIB N ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342022
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[2 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB U ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342023
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[8 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[8 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342024
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[8 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[8 ] OF EQUIPMENT  ) N ( - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342025
+
+Rules
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB N ) U ( ATTRIB U ) )
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+==============================================================================================
+CYLI =9212/342026
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DIAM + ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DIAM + ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  ) ) N ( ATTRIB N ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342027
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( -1 * ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) ) U ( ATTRIB U ) )
+==============================================================================================
+CYLI =9212/342028
+
+Rules
+HEIG Dynamic Rule ( 1330 + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( W ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  + 0.5 * ATTRIB HEIG ) N ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[14 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342029
+
+Rules
+HEIG Dynamic Rule ( 1330 + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( W ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  + 0.5 * ATTRIB HEIG ) N ( - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[14 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342030
+
+Rules
+HEIG Dynamic Rule ( 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  + 0.5 * ATTRIB HEIG ) N ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[14 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342031
+
+Rules
+HEIG Dynamic Rule ( 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  + 0.5 * ATTRIB HEIG ) N ( - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[14 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342032
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342033
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342034
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) + ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342035
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[2 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( -1 * ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( ATTRIB N ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342036
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342037
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) S ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+SUBE /LW8_NEW_TEST/FRAME
+
+Rules
+  none
+==============================================================================================
+BOX =9212/342039
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( 2 * ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB N ) U ( - 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+NBOX =9212/342040
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( -1 * ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[9 ] OF EQUIPMENT  ) ) U ( - 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[10 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+NBOX =9212/342041
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[9 ] OF EQUIPMENT  ) U ( - 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[10 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+NBOX =9212/342042
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB E ) N ( ATTRIB N ) U ( ATTRIB U ) )
+YLEN Dynamic Rule ( 2 * ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[4 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342043
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB N ) U ( 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+BOX =9212/342044
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB E ) N ( ATTRIB N ) U ( 1.5 * ATTRIB DESP[9 ] OF EQUIPMENT  ) )
+==============================================================================================
+BOX =9212/342045
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( - ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + 3 * ATTRIB DESP[9 ] OF EQUIPMENT  ) ) ) U ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+BOX =9212/342046
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) - ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + 3 * ATTRIB DESP[9 ] OF EQUIPMENT  ) ) U ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+SUBE /LW8_NEW_TEST/OUTLET
+
+Rules
+POS Dynamic Rule ( W ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[8 ] OF EQUIPMENT  + ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( 0 mm ) D ( ATTRIB DESP[14 ] OF EQUIPMENT  - 460 mm ) )
+==============================================================================================
+BOX =9212/342048
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( W ( ATTRIB XLEN * 0.5 ) N ( 0 mm ) U ( - 0.5 * ATTRIB ZLEN ) )
+XLEN Dynamic Rule ( ( ATTRIB DESP[13 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) / COS ( 40 ) + ATTRIB ZLEN * TAN ( 40 ) )
+==============================================================================================
+NBOX =9212/342049
+
+Rules
+YLEN Dynamic Rule ( ATTRIB YLEN OF OWNER  )
+ZLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  / COS ( 40 ) )
+XLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  * TAN ( 40 ) )
+POS Dynamic Rule ( W ( 0.5 * ATTRIB XLEN OF OWNER  - TAN ( 40 ) * 0.5 * ATTRIB ZLEN OF OWNER  + COS ( 40 ) * ATTRIB XLEN * 0.5 ) N ( 0 mm ) U ( SIN ( 40 ) * ATTRIB XLEN * 0.5 ) )
+==============================================================================================
+NBOX =9212/342050
+
+Rules
+YLEN Dynamic Rule ( ATTRIB YLEN OF OWNER  )
+XLEN Dynamic Rule ( COS ( 40 ) * ATTRIB ZLEN OF OWNER  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB ZLEN OF OWNER  ) N ( 0 mm ) D ( 0 mm ) WRT SUBEQUIPMENT  )
+ZLEN Dynamic Rule ( 2 * ATTRIB DESP[3 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342051
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  )
+==============================================================================================
+PYRA =9212/342052
+
+Rules
+XBOT Dynamic Rule ( TAN ( 40 ) * ATTRIB HEIG )
+XOFF Dynamic Rule ( - 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+POS Dynamic Rule ( W ( 0.5 * ( ATTRIB HEIG + 920 * TAN ( 50 ) ) * COS ( 40 ) + 0.5 * ( ATTRIB XTOP + 0.5 * TAN ( 40 ) * ATTRIB HEIG + 920 ) * SIN ( 40 ) ) N ( 0 mm ) U ( 0.5 * ( ATTRIB HEIG + 920 * TAN ( 50 ) ) * SIN ( 40 ) - 0.5 * ( ATTRIB XTOP + 0.5 * TAN ( 40 ) * ATTRIB HEIG + 920 ) * COS ( 40 ) ) )
+YTOP Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+EQUI /LW3_NEW_TEST
+
+Rules
+  none
+==============================================================================================
+SUBE /LW3_NEW_TEST/HEADERS
+
+Rules
+  none
+==============================================================================================
+CYLI =9212/342083
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ( ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342084
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342085
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[14 ] OF EQUIPMENT  + ATTRIB DIAM )
+POS Dynamic Rule ( E ( - 0.5 * ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[14 ] OF EQUIPMENT  + ATTRIB DIAM - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( 0 mm ) )
+==============================================================================================
+CYLI =9212/342086
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DIAM - 203 mm )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  - ATTRIB DESP[2 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DIAM - ATTRIB DESP[4 ] OF EQUIPMENT  + 203 mm ) ) U ( 0 mm ) )
+==============================================================================================
+CYLI =9212/342087
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[4 ] OF EQUIPMENT  ) ) U ( 0 mm ) )
+==============================================================================================
+CYLI =9212/342088
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0 mm ) U ( 0 mm ) )
+==============================================================================================
+CYLI =9212/342089
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( - ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DIAM ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342090
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[4 ] OF EQUIPMENT  ) ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342091
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DESP[1 ] OF EQUIPMENT  ) U ( ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342092
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  - ATTRIB DESP[2 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DESP[1 ] OF EQUIPMENT  ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342093
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[14 ] OF EQUIPMENT  + ATTRIB DIAM )
+POS Dynamic Rule ( E ( - 0.5 * ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[14 ] OF EQUIPMENT  + ATTRIB DIAM - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) U ( 0 mm ) )
+==============================================================================================
+CYLI =9212/342094
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( ATTRIB DESP[30 ] OF EQUIPMENT  * ( ATTRIB DESP[1 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) ) U ( - ATTRIB DESP[3 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342095
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 3 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( - 1.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DIAM ) U ( - ATTRIB DESP[15 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342096
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 3 * ATTRIB DIAM )
+POS Dynamic Rule ( E ( - 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  - ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( - 1.5 * ATTRIB DESP[30 ] OF EQUIPMENT  * ATTRIB DIAM ) U ( - ATTRIB DESP[15 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342097
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[6 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[6 ] OF EQUIPMENT  ) ) N ( - ATTRIB DESP[30 ] OF EQUIPMENT  * ( 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  + 415 ) ) U ( - ATTRIB DESP[15 ] OF EQUIPMENT  ) )
+==============================================================================================
+SUBE /LW3_NEW_TEST/FRAME
+
+Rules
+  none
+==============================================================================================
+BOX =9212/342099
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( - 0.5 * ( ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) N ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[4 ] OF EQUIPMENT  ) * ATTRIB DESP[30 ] OF EQUIPMENT  ) U ( - 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+==============================================================================================
+NBOX =9212/342100
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0 mm ) N ( 0 mm ) U ( 0 mm ) )
+==============================================================================================
+NBOX =9212/342101
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( W ( - 0.5 * ( ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) S ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[4 ] OF EQUIPMENT  ) * ATTRIB DESP[30 ] OF EQUIPMENT  ) D ( - 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+BOX =9212/342102
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0 mm ) N ( 0 mm ) U ( 1.5 * ATTRIB DESP[9 ] OF EQUIPMENT  ) )
+==============================================================================================
+SUBE /LW3_NEW_TEST/OUTLET
+
+Rules
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  - ATTRIB DESP[2 ] OF EQUIPMENT  ) N ( 0 mm ) D ( ATTRIB DESP[14 ] OF EQUIPMENT  - TAN ( 40 ) * ATTRIB DESP[14 ] OF EQUIPMENT  ) )
+==============================================================================================
+BOX =9212/342104
+
+Rules
+POS Dynamic Rule ( W ( 0.5 * ATTRIB XLEN ) N ( 0 mm ) D ( 0.5 * ATTRIB ZLEN ) )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ( ATTRIB DESP[13 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  - ATTRIB DESP[2 ] OF EQUIPMENT  ) / COS ( 40 ) + ATTRIB ZLEN * TAN ( 40 ) )
+==============================================================================================
+NBOX =9212/342105
+
+Rules
+YLEN Dynamic Rule ( ATTRIB YLEN OF OWNER  )
+POS Dynamic Rule ( W ( 0.5 * ATTRIB XLEN OF OWNER  - TAN ( 40 ) * 0.5 * ATTRIB ZLEN OF OWNER  + COS ( 40 ) * ATTRIB XLEN * 0.5 ) N ( 0 mm ) U ( SIN ( 40 ) * ATTRIB XLEN * 0.5 ) )
+ZLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  / COS ( 40 ) )
+XLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  * TAN ( 40 ) )
+==============================================================================================
+NBOX =9212/342106
+
+Rules
+YLEN Dynamic Rule ( ATTRIB YLEN OF OWNER  )
+XLEN Dynamic Rule ( COS ( 40 ) * ATTRIB ZLEN OF OWNER  )
+ZLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  / COS ( 40 ) )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB XLEN OF OWNER  - TAN ( 40 ) * 0.5 * ATTRIB ZLEN OF OWNER  + COS ( 40 ) * ATTRIB XLEN * 0.5 ) N ( 0 mm ) D ( SIN ( 40 ) * ATTRIB XLEN * 0.5 ) )
+==============================================================================================
+NBOX =9212/342107
+
+Rules
+XLEN Dynamic Rule ( ATTRIB XLEN OF OWNER  )
+ZLEN Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+==============================================================================================
+PYRA =9212/342108
+
+Rules
+XOFF Dynamic Rule ( - 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+POS Dynamic Rule ( W ( 0.5 * ATTRIB HEIG * COS ( 40 ) + 0.5 * ( ATTRIB XTOP + 0.5 * TAN ( 40 ) * ATTRIB HEIG - 2 * ATTRIB XTOP ) * SIN ( 40 ) ) N ( 0 mm ) U ( 0.5 * ATTRIB HEIG * SIN ( 40 ) - 0.5 * ( ATTRIB XTOP + 0.5 * TAN ( 40 ) * ATTRIB HEIG - 2 * ATTRIB XTOP ) * COS ( 40 ) ) )
+YTOP Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( ATTRIB DESP[14 ] OF EQUIPMENT  )
+HEIG Dynamic Rule ( ATTRIB DESP[14 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[14 ] OF EQUIPMENT  - TAN ( 40 ) * ATTRIB DESP[14 ] OF EQUIPMENT  )
+==============================================================================================
+EQUI /EMPTY_PASS_NEW_TEST
+
+Rules
+  none
+==============================================================================================
+SUBE /EMPTY_PASS_NEW_TEST/BODY
+
+Rules
+  none
+==============================================================================================
+PYRA =9212/342222
+
+Rules
+XOFF Dynamic Rule ( - 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+HEIG Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.25 * ( ATTRIB XTOP + ATTRIB XBOT ) ) N ( 0 mm ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[9 ] OF EQUIPMENT  ) )
+XTOP Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[23 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  + ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+NPYR =9212/342223
+
+Rules
+XOFF Dynamic Rule ( - 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+HEIG Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+POS Dynamic Rule ( W ( 0.5 * ATTRIB DESP[23 ] OF EQUIPMENT  ) N ( 0 mm ) U ( 0 mm ) )
+==============================================================================================
+PYRA =9212/342224
+
+Rules
+XOFF Dynamic Rule ( 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+HEIG Dynamic Rule ( ATTRIB DESP[7 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[8 ] OF EQUIPMENT  - 0.25 * ( ATTRIB XTOP + ATTRIB XBOT ) ) N ( 0 mm ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[7 ] OF EQUIPMENT  ) )
+XTOP Dynamic Rule ( ATTRIB DESP[8 ] OF EQUIPMENT  + ATTRIB DESP[23 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  + ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+NPYR =9212/342225
+
+Rules
+XTOP Dynamic Rule ( ATTRIB DESP[8 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+HEIG Dynamic Rule ( ATTRIB DESP[7 ] OF EQUIPMENT  )
+XOFF Dynamic Rule ( 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB DESP[23 ] OF EQUIPMENT  ) N ( 0 mm ) U ( 0 mm ) )
+==============================================================================================
+BOX =9212/342227
+
+Rules
+ZLEN Dynamic Rule ( ATTRIB DESP[11 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[8 ] OF EQUIPMENT  ) N ( 0 mm ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[11 ] OF EQUIPMENT  ) )
+XLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342228
+
+Rules
+ZLEN Dynamic Rule ( ATTRIB DESP[11 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+==============================================================================================
+PYRA =9212/342229
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[8 ] OF EQUIPMENT  ) N ( 0 mm ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  + ATTRIB DESP[11 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[13 ] OF EQUIPMENT  ) )
+YBOT Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( 2 * ATTRIB DESP[13 ] OF EQUIPMENT  / TAN ( ATTRIB DESP[15 ] OF EQUIPMENT  ) + ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+NPYR =9212/342230
+
+Rules
+XBOT Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  )
+HEIG Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( 2 * ATTRIB DESP[13 ] OF EQUIPMENT  / TAN ( ATTRIB DESP[15 ] OF EQUIPMENT  ) + ATTRIB DESP[12 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342288
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+POS Dynamic Rule ( W ( 0.5 * ATTRIB YLEN ) N ( 0 mm ) D ( 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) )
+ZLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342289
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0 mm ) N ( 0 mm ) U ( 0.5 * ( ATTRIB ZLEN OF OWNER  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342290
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+POS Dynamic Rule ( W ( 1.5 * ATTRIB YLEN ) N ( 0 mm ) U ( 0.5 * ATTRIB ZLEN ) )
+==============================================================================================
+BOX =9212/342291
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + 0.5 * ATTRIB YLEN ) N ( 0 mm ) D ( 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[9 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342292
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[6 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0 mm ) N ( 0 mm ) U ( 0.5 * ( ATTRIB ZLEN OF OWNER  - ATTRIB DESP[6 ] OF EQUIPMENT  ) ) )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342293
+
+Rules
+ZLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  ) ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB YLEN ) ) D ( 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) )
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342294
+
+Rules
+ZLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  ) ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB YLEN ) ) D ( 0.5 * ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) ) )
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342295
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[23 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB XLEN - ATTRIB DESP[23 ] OF EQUIPMENT  ) N ( 0 mm ) U ( ATTRIB DESP[5 ] OF EQUIPMENT  + 0.5 * ATTRIB ZLEN ) )
+ZLEN Dynamic Rule ( ATTRIB DESP[23 ] OF EQUIPMENT  )
+==============================================================================================
+SUBE /EMPTY_PASS_NEW_TEST/HEADERS
+
+Rules
+  none
+==============================================================================================
+CYLI =9212/342297
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[14 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[8 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  ) N ( ATTRIB N ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  + ATTRIB DESP[11 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342298
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[14 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[8 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[10 ] OF EQUIPMENT  ) N ( ATTRIB N ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  + ATTRIB DESP[11 ] OF EQUIPMENT  ) )
+==============================================================================================
+SUBE /EMPTY_PASS_NEW_TEST/CYLI
+
+Rules
+  none
+==============================================================================================
+CYLI =9212/342243
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[16 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342244
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[17 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342245
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342246
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[19 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342247
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[20 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342248
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[21 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342249
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[16 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342250
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[17 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342251
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342252
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[19 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342253
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[20 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342254
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[22 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[21 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+EQUI /THIRD_PASS_NEW_TEST
+
+Rules
+  none
+==============================================================================================
+SUBE /THIRD_PASS_NEW_TEST/BODY
+
+Rules
+  none
+==============================================================================================
+BOX =9212/342111
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[7 ] OF EQUIPMENT  - ATTRIB DESP[8 ] OF EQUIPMENT  - ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  + 0.5 * ATTRIB XLEN ) N ( 0 mm ) D ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[14 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[13 ] OF EQUIPMENT  ) )
+==============================================================================================
+NBOX =9212/342112
+
+Rules
+XLEN Dynamic Rule ( ATTRIB XLEN OF OWNER  )
+YLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+==============================================================================================
+PYRA =9212/342113
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[8 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  - 0.5 * ATTRIB HEIG ) N ( 0 mm ) D ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[14 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[13 ] OF EQUIPMENT  ) )
+==============================================================================================
+NPYR =9212/342114
+
+Rules
+YTOP Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+HEIG Dynamic Rule ( ATTRIB DESP[8 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342299
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[11 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[11 ] OF EQUIPMENT  ) N ( 0 mm ) D ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[14 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[13 ] OF EQUIPMENT  ) )
+==============================================================================================
+NBOX =9212/342300
+
+Rules
+XLEN Dynamic Rule ( ATTRIB XLEN OF OWNER  )
+YLEN Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+==============================================================================================
+EXTR =9212/342115
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[9 ] OF EQUIPMENT  - 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( 0.5 * ATTRIB HEIG ) D ( 0 mm ) )
+==============================================================================================
+LOOP =9212/342116
+
+Rules
+  none
+==============================================================================================
+VERT =9212/342117
+
+Rules
+POS Dynamic Rule ( E ( 0 mm ) S ( ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342118
+
+Rules
+POS Dynamic Rule ( E ( 0 mm ) N ( ATTRIB DESP[16 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342119
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  - 0.6 * ATTRIB DESP[2 ] OF EQUIPMENT  ) N ( ATTRIB DESP[16 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342120
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( 0.25 * ATTRIB DESP[16 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342121
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) S ( 1500 mm ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342122
+
+Rules
+POS Dynamic Rule ( E ( 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) S ( 1500 mm ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342123
+
+Rules
+POS Dynamic Rule ( E ( 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) S ( ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+NXTR =9212/342124
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0 mm ) S ( 0 mm ) U ( ATTRIB DESP[9 ] OF EQUIPMENT  ) )
+==============================================================================================
+LOOP =9212/342125
+
+Rules
+  none
+==============================================================================================
+VERT =9212/342126
+
+Rules
+POS Dynamic Rule ( E ( 0 mm ) S ( 0.2 * ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342127
+
+Rules
+POS Dynamic Rule ( E ( 0 mm ) N ( ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342128
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  - 0.6 * ATTRIB DESP[2 ] OF EQUIPMENT  ) N ( ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342129
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) N ( ATTRIB DESP[16 ] OF EQUIPMENT  - 0.75 * ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342130
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  ) S ( 1500 mm ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342131
+
+Rules
+POS Dynamic Rule ( E ( 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) S ( 1500 mm ) D ( 0 mm ) )
+==============================================================================================
+VERT =9212/342132
+
+Rules
+POS Dynamic Rule ( E ( 0.2 * ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) S ( 0.2 * ATTRIB DESP[16 ] OF EQUIPMENT  ) D ( 0 mm ) )
+==============================================================================================
+PYRA =9212/342133
+
+Rules
+XOFF Dynamic Rule ( - 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+XTOP Dynamic Rule ( ATTRIB DESP[16 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ATTRIB HEIG ) N ( 0 mm ) U ( 0.75 * ATTRIB XTOP - 0.25 * ATTRIB XBOT - ATTRIB DESP[9 ] OF EQUIPMENT  ) )
+XBOT Dynamic Rule ( ATTRIB DESP[16 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[16 ] OF EQUIPMENT  )
+HEIG Dynamic Rule ( 0.8 * ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+NPYR =9212/342134
+
+Rules
+XTOP Dynamic Rule ( ATTRIB DESP[16 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+XOFF Dynamic Rule ( - 0.5 * ( ATTRIB XBOT - ATTRIB XTOP ) )
+XBOT Dynamic Rule ( ATTRIB DESP[16 ] OF EQUIPMENT  + 0.2 * ATTRIB DESP[16 ] OF EQUIPMENT  )
+HEIG Dynamic Rule ( 0.8 * ATTRIB DESP[6 ] OF EQUIPMENT  - ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342135
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[2 ] OF EQUIPMENT  ) N ( 0 mm ) D ( 0.5 * ATTRIB ZLEN + 1500 ) )
+ZLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - 1500 )
+YLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342301
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[13 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[2 ] OF EQUIPMENT  + ATTRIB DESP[9 ] OF EQUIPMENT  ) ) N ( 0 mm ) D ( ATTRIB DESP[1 ] OF EQUIPMENT  + ATTRIB DESP[3 ] OF EQUIPMENT  - ATTRIB DESP[14 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[13 ] OF EQUIPMENT  - 1500 - 0.5 * ATTRIB ZLEN OF OWNER  ) )
+==============================================================================================
+NBOX =9212/342136
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  - 1500 )
+==============================================================================================
+PYRA =9212/342137
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[4 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[12 ] OF EQUIPMENT  - 0.5 * ( ATTRIB DESP[4 ] OF EQUIPMENT  - 0.5 * ( ATTRIB XTOP - ATTRIB XBOT ) ) ) N ( 0 mm ) D ( ATTRIB DESP[1 ] OF EQUIPMENT  + 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  ) )
+XOFF Dynamic Rule ( - ATTRIB DESP[4 ] OF EQUIPMENT  + 0.5 * ( ATTRIB XTOP - ATTRIB XBOT ) )
+XTOP Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[15 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+NPYR =9212/342138
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  )
+XTOP Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  )
+XBOT Dynamic Rule ( ATTRIB DESP[12 ] OF EQUIPMENT  )
+YTOP Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+YBOT Dynamic Rule ( ATTRIB DESP[15 ] OF EQUIPMENT  )
+XOFF Dynamic Rule ( - ATTRIB DESP[4 ] OF EQUIPMENT  + 0.5 * ( ATTRIB XTOP - ATTRIB XBOT ) )
+==============================================================================================
+SUBE /THIRD_PASS_NEW_TEST/CYLI
+
+Rules
+  none
+==============================================================================================
+CYLI =9212/342140
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[17 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342141
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[19 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342142
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[20 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342143
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[21 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342144
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[22 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342145
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) N ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[23 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( 1 / ( 3 - ATTRIB DESP[30 ] OF EQUIPMENT  ) ) )
+==============================================================================================
+CYLI =9212/342146
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[17 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342147
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[19 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342148
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[20 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342149
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[21 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342150
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[22 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+CYLI =9212/342151
+
+Rules
+POS Dynamic Rule ( E ( ATTRIB DESP[6 ] OF EQUIPMENT  + ATTRIB DESP[2 ] OF EQUIPMENT  - ATTRIB DESP[18 ] OF EQUIPMENT  ) S ( 0.5 * ( ATTRIB DESP[5 ] OF EQUIPMENT  + ATTRIB HEIG ) ) D ( ATTRIB DESP[23 ] OF EQUIPMENT  ) )
+HEIG Dynamic Rule ( 360 * NINT ( ABS ( -1 + ATTRIB DESP[30 ] OF EQUIPMENT  ) / 2 ) )
+==============================================================================================
+EQUI /SUPERHEATER_NEW_TEST
+
+Rules
+  none
+==============================================================================================
+SUBE /SUPERHEATER_NEW_TEST/HEADERS
+
+Rules
+  none
+==============================================================================================
+CYLI =9212/342279
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  - 2 * ATTRIB DESP[6 ] OF EQUIPMENT  + 2 * ATTRIB DESP[8 ] OF EQUIPMENT  )
+DIAM Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) + ATTRIB DESP[4 ] OF EQUIPMENT  ) N ( 0 mm ) U ( 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  ) )
+==============================================================================================
+CYLI =9212/342280
+
+Rules
+HEIG Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  - 2 * ATTRIB DESP[6 ] OF EQUIPMENT  + 2 * ATTRIB DESP[8 ] OF EQUIPMENT  )
+DIAM Dynamic Rule ( ATTRIB DESP[10 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) + ATTRIB DESP[4 ] OF EQUIPMENT  ) N ( 0 mm ) D ( 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  + ATTRIB DESP[7 ] OF EQUIPMENT  ) )
+==============================================================================================
+SUBE /SUPERHEATER_NEW_TEST/BODY
+
+Rules
+  none
+==============================================================================================
+BOX =9212/342282
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( W ( 0.5 * ATTRIB DESP[5 ] OF EQUIPMENT  ) N ( 0 mm ) U ( 0 mm ) )
+==============================================================================================
+NBOX =9212/342283
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342284
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( 321 mm + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+YLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  - 2 * ATTRIB DESP[6 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) N ( 0 mm ) U ( 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  - 0.5 * ATTRIB ZLEN + ATTRIB DESP[7 ] OF EQUIPMENT  ) )
+==============================================================================================
+NBOX =9212/342285
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  - 2 * ATTRIB DESP[6 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  - 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+BOX =9212/342286
+
+Rules
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( 321 mm + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+POS Dynamic Rule ( E ( 0.5 * ( ATTRIB DESP[1 ] OF EQUIPMENT  - ATTRIB DESP[5 ] OF EQUIPMENT  ) + 0.5 * ATTRIB DESP[4 ] OF EQUIPMENT  ) N ( 0 mm ) D ( 0.5 * ATTRIB DESP[3 ] OF EQUIPMENT  - 0.5 * ATTRIB ZLEN + ATTRIB DESP[7 ] OF EQUIPMENT  ) )
+YLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  - 2 * ATTRIB DESP[6 ] OF EQUIPMENT  + 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
+==============================================================================================
+NBOX =9212/342287
+
+Rules
+YLEN Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT  - 2 * ATTRIB DESP[6 ] OF EQUIPMENT  )
+XLEN Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+ZLEN Dynamic Rule ( ATTRIB ZLEN OF OWNER  - 2 * ATTRIB DESP[9 ] OF EQUIPMENT  )
