@@ -1,0 +1,163 @@
+--Collect all site with :MPTMACHID set
+var !sites collect all site with not matchw (:MPTMACHID,'')
+$P SITES:
+Q var !sites
+!total = array()
+!linked = array()
+!linkednUpdated = array()
+do !site values !sites
+	!allelements = array()
+	!siteMachID = !site.dbref().:MPTMACHID
+	--Collect broken link elements ---------------------------------------------------------------------------------------------------------
+	var !elemwComos collect all with type inset('PIPE', 'HVAC', 'EQUI', 'BRAN') and not matchw (:ComosUID,'') and badref(ENGLNK) for $!site
+	var !elemwName collect all with type inset('EQUI') and matchw (:ComosUID,'') and badref(ENGLNK) for $!site
+	!allelements.append(!elemwComos)
+	!allelements.append(!elemwName)
+	!arraysizeA = !elemwComos.size()
+	!arraysizeB = !elemwName.size()
+	$P $!arraysizeA broken link element found with ComosUID in Site: $!site
+	$P $!arraysizeB broken link element found without ComosUID in Site: $!site
+	!total.append(!arraysizeA + !arraysizeB)
+	!linkelems = 0
+	!linkednUpdatedelemes = 0
+	----------------------------------------------------------------------------------------------------------------------------------------
+	-- In 1st loop, run through all elements HAVING ComosUID, In 2nd loop run through all elements NOT HAVING ComosUID =====================
+	do !arr index !allelements
+		do !elem values !allelements[!arr]
+			$P ----------------------------------------------------------------------------------------------------------------
+			!elemRef = !elem.dbref()
+			$P $!elem; Type: $!elemRef.type
+			-- Get ENGITE 
+			if (!arr eq 1) then
+				!comName = !elemRef.:ComosUID
+				!engElems = !!collectallfor('ENGITE', ':VALITCOMOSSYSUID eq |$!comName|' , world)
+				--?????????????????????????????
+				if (!engElems.size() eq 1) then
+					!engPLabel = !engElems[1].:VALITPLABEL
+					!desName = !elemRef.Name.After('/')
+					if (|$!engPLabel| ne |$!desName|) then
+						$P Element name does not match with :VALITPLABEL of ENGITE
+						$P Element Name: $!desName || VALITPLABEL: $!engPLabel
+						skip
+					endif
+				endif
+				
+			elseif (!arr eq 2) then
+				!elemName = !elemRef.Name.After('/')
+				!engElems = !!collectallfor('ENGITE', ':VALITPLABEL eq |$!elemName|' , world)
+				--?????????????????????????????
+			endif
+			-----------------------------------------------------------------------------------
+			--Is collection has one element?
+			if (!engElems.size() gt 1) then
+				$P More than one ENGITE element found
+				$P ENGITE elements:
+				Q var !engElems
+				skip
+			elseif (!engElems.size() eq 0) then
+				$P No ENGITE element found
+				skip
+			endif
+			--Get :VALITEQUID of ENGITE element
+			!engItemEquiId = !engElems[1].:VALITPROJREF.:VALITEQUIID.flnn
+			handle any
+			elsehandle none
+				--Is :MPTMACHID(Des) = :VALITEQUIID(Eng)?
+				if (!engItemEquiId ne !siteMachID) then
+					$P VALITEQUIID does not match with Site MPTMACHID;
+					$P VALITEQUIID: $!engItemEquiId , MPTMACHID: $!siteMachID
+					skip
+				endif
+			endhandle
+			
+			--================================ LINK CREATION ====================================
+			-- Till now DES eleme got its ENG elem, now the linking starts
+			!desElem = !elemRef
+			!engElem = !engElems[1]
+			var !engcymLn collect all CYMLNK with ENGLNK[1] eq !engElem
+			var !descymLn collect all CYMLNK with DESLNK[1] eq !desElem
+			
+			if not !engcymLn.empty() and !descymLn.empty() then
+				if not (!engcymLn[1].dbref().DESLNK.empty()) and not (!engcymLn[1].dbref().DESLNK[1].badref()) then
+					!x = !engcymLn[1].dbref().DesLnk[1]
+					$P ENGITE: $!engElem has valid DESLNK: $!x
+					skip
+				elseif not (!engcymLn[1].dbref().DESLNK.empty()) and (!engcymLn[1].dbref().DESLNK[1].badref()) then
+					$P ENGITE: $!engElem.name has broken DESLNK, assigning $!desElem.name as DESLNK
+					--LINKING CODE HERE
+					!engcymLndbrf = !engcymLn[1].dbref()
+					!engcymLndbrf.DesLnk[1] = !desElem
+					handle any
+						$P Unable to update CYMLNK element
+						skip
+					elsehandle none
+						$P Link updated
+						!linkelems = !linkelems + 1
+					endhandle
+				endif
+			elseif !engcymLn.empty() and not !descymLn.empty() then
+				$P Des: $!desElem.name has broken ENGLNK, assigning $!engElem.name as ENGLNK
+				--LINKING CODE HERE
+				!descymLndbrf = !descymLn[1].dbref()
+				!descymLndbrf.EngLnk = !engElem
+				--?????????????????????????????
+				handle any
+					$P Unable to update CYMLNK element
+					skip
+				elsehandle none
+					$P Link updated
+					!linkelems = !linkelems + 1
+				endhandle
+			elseif !engcymLn.empty() and !descymLn.empty() then
+				$P Design element and Engineering element do not have CYMLNK
+				skip
+			else
+				$P Both Design and Engineering element have CYMLNK
+				skip
+			endif
+
+			--================================ UPDATE ====================================
+			if !elemRef.type eq 'PIPE' or !elemRef.type eq 'HVAC' or !elemRef.type eq 'EQUI' then
+				$P Updating $!elemRef.type element
+				call !!UpdateDesiElem(!elemRef)
+				handle any
+					$P Unable to update the element; Error: $!!Error.Text
+				elsehandle none
+					$P Element updated
+					!linkednUpdatedelemes = !linkednUpdatedelemes + 1
+				endhandle
+			elseif !elemRef.own.type eq 'PIPE' then
+				$P Updating BRAN(PIPE) element
+				call !!VALITUpdateDesiBran(!elemRef)
+				handle any
+					$P Unable to update the element; Error: $!!Error.Text
+				elsehandle none
+					$P Element updated
+					!linkednUpdatedelemes = !linkednUpdatedelemes + 1
+				endhandle
+			elseif !elemRef.own.type eq 'HVAC' then
+				$P Updating BRAN(HVAC) element
+				call !!VALITUpdateDesiHvacBran(!elemRef)
+				handle any
+					$P Unable to update the element; Error: $!!Error.Text
+				elsehandle none
+					$P Element updated
+					!linkednUpdatedelemes = !linkednUpdatedelemes + 1
+				endhandle
+			endif
+			--............................................................
+		enddo
+	enddo
+	!linked.append(!linkelems)
+	!linkednUpdated.append(!linkednUpdatedelemes)
+enddo
+SAVEWORK
+--================================================================================
+$P -------------------------------------------------
+$P SITE          TOTAL     LINKED     LINKED+UPDATED
+do !x index !sites
+$P $!sites[$!x]    $!total[$!x]        $!linked[$!x]            $!linkednUpdated[$!x]
+enddo
+$P -------------------------------------------------
+--================================================================================
+QUIT FINISH
