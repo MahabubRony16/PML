@@ -1,0 +1,98 @@
+ALP LOG /SNECHECKLOG.txt OVER
+VAR !ALLSECT COLLECT ALL SECT FOR CE
+DO !SECT VALUES !ALLSECT
+VAR !CATES COLLECT ALL CATE FOR $!SECT
+$P ====================================================================
+$P Checking SECT: $!SECT 
+$P ====================================================================
+$p --------------------------------------------------------------------
+$P Checking Names of CATE members
+$p --------------------------------------------------------------------
+DO !CAT VALUES !CATES
+	!CATNAME = !CAT.DBREF().NAME
+	!MEM = !CAT.DBREF().MEM
+	DO !M values !MEM
+		!MEMNAME = !M.NAME
+		IF NOT MatchWild('$!MEMNAME', '$!CATNAME*') THEN
+			$P PARENTNAME: $!CATNAME ;CHILDNAME: $!MEMNAME
+		ENDIF
+	ENDDO
+	VAR !DTS COLLECT ALL DTSE FOR $!CAT
+	DO !DATA VALUES !DTS
+		!MEM = !DATA.DBREF().MEM
+		DO !M values !MEM
+			!MEMNAME = !M.NAME
+			IF NOT MatchWild('$!MEMNAME', '$!CATNAME*') THEN
+				$P DTSE PARENTNAME: $!CATNAME ;CHILDNAME: $!MEMNAME
+			ENDIF
+		ENDDO
+	ENDDO
+ENDDO
+$p --------------------------------------------------------------------
+$P Checking PTREF/GMREF/DTREF
+$p --------------------------------------------------------------------
+DO !CAT VALUES !CATES
+	VAR !SCOS COLLECT ALL SCOM FOR $!CAT
+	DO !SCO VALUES !SCOS
+		!CATNAME = !CAT.DBREF().NAME
+		!PTRE = !CATNAME + '-PTSE'
+		!GMRE = !CATNAME + '-GMSE'
+		!DTRE = !CATNAME
+		!ACTPTRE = !SCO.DBREF().PTREF.NAME
+		HANDLE ANY 
+			$P $!SCO
+		ELSEHANDLE NONE
+			IF NOT MatchWild('$!ACTPTRE', '$!PTRE*') THEN
+				$P NOT VALID PTREF: $!SCO
+			ENDIF
+		ENDHANDLE
+		!ACTGMRE = !SCO.DBREF().GMREF.NAME
+		HANDLE ANY 
+			$P $!SCO
+		ELSEHANDLE NONE
+			IF NOT MatchWild('$!ACTGMRE', '$!GMRE*') THEN
+				$P NOT VALID GMREF: $!SCO
+			ENDIF
+		ENDHANDLE
+		!ACTDTRE = !SCO.DBREF().DTREF.NAME
+		HANDLE ANY 
+			$P $!SCO
+		ELSEHANDLE NONE
+			IF NOT MatchWild('$!ACTDTRE', '$!DTRE*-DTSE') THEN
+				$P NOT VALID DTREF: $!SCO
+			ENDIF
+		ENDHANDLE
+	ENDDO
+ENDDO
+$p --------------------------------------------------------------------
+$P Checking Description whether empty
+$p --------------------------------------------------------------------
+DO !CAT VALUES !CATES
+	!DESC = !CAT.DBREF().DESC
+	IF !DESC.TRIM() EQ '' THEN
+		$P $!CAT
+	ENDIF
+ENDDO
+$p --------------------------------------------------------------------
+$P Checking SKEY
+$p --------------------------------------------------------------------
+DO !CAT VALUES !CATES
+	!SKEY = !CAT.DBREF().SKEY
+	!OWNNAMESUF = !CAT.DBREF().OWNER.NAME.AFTER('-')
+	IF !SKEY NE !OWNNAMESUF THEN
+		$P $!CAT ; $!SKEY ; $!OWNNAMESUF
+	ENDIF
+ENDDO
+$p --------------------------------------------------------------------
+$P Checking PURP
+$p --------------------------------------------------------------------
+DO !CAT VALUES !CATES
+	!PURP = !CAT.DBREF().PURP
+	!ACTPURP = 'COMP'
+	IF !PURP NE !ACTPURP THEN
+		$P $!CAT ; $!PURP ; $!ACTPURP
+	ENDIF
+ENDDO
+ENDDO
+
+ALP LOG END
