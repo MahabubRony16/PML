@@ -1,0 +1,936 @@
+
+-- [c] Metso
+--
+-- File:            
+--   Type:          PML Function
+--   Group:         pmlfunction
+--   Keyword:     
+--   Module:        
+--   Replaces:
+--
+-- Author:          
+-- Created:         
+--
+-- 
+--
+-- Description:
+--   				Create XML MTO for whole project
+--					and Position info
+------------------------------------------------------------------------
+--
+-- Function Type:   Function/Procedure
+-- Arguments:
+--   [#] [R/RW] [Data hh:Type] [Description]
+--		1	R	Array		Collection of Pipes, as array of strings or dbrefs
+-- Return:
+--   [Data hh:Type] [Description]
+------------------------------------------------------------------------
+Define function !!RunXMLPipeMTOAuto()
+ONERROR GOLABEL /ERRORCLOSE
+$p Pipe MTO running...RunXMLPipeMTOAuto
+!project = CURRENT PROJECT
+!projCode = !project.Code()
+!projName = !project.Name()
+!pdmsData = BANNER
+!date = Object DateTime()
+!dateSeconds = !date.Second()
+!aMtoObjects = Object Array()
+!allPosInfo = object Array()
+!aPrintRowsHeader = Object Array()
+var !mdb mdb
+!mdb = !mdb.substring(2)
+!e3d = FALSE
+if !pdmsData.Short.MatchWild('*Mk12.1*') or !pdmsData.Short.MatchWild('*Everything3D*') or !pdmsData.Short.MatchWild('*E3D*') then
+	!pdmsVersion121 = TRUE
+	if(!pdmsData.Short.MatchWild('*Everything3D*') or !pdmsData.Short.MatchWild('*E3D*')) then
+		!e3d = TRUE
+	endif
+else
+	!pdmsVersion121 = FALSE
+	return
+endif
+--------------------------------------------------------------------------------------------------
+var !inputArray collect all site with not matchw (:MPTMACHID,'') and not matchw (:MPTMILLID,'')
+if (!inputArray.size() eq 0) then
+	return
+endif
+!logmillid = !inputArray[1].dbref().:MPTMILLID
+handle any
+	!logmillid = 'No_MillID'
+endhandle
+--------------------------------------------------------------------------------------------------
+!dflts = !projCode + 'DFLTS'
+var !dflts evar $!dflts
+if !dflts.substring(!dflts.length(),-1) ne '\' then
+	!dflts = !dflts + '\'
+endif
+!dflts = !dflts + 'ProjectGlobalVariables.txt'
+$m $!dflts
+handle any
+endhandle
+
+--======================================================Change path
+!sPdmsUserPath = '\\v0473a.vstage.co\PlantPLM\Integrations\PLM\15-Mto\Generated'
+!tempDir = '\\v0473a.vstage.co\PlantPLM\Integrations\PLM\15-Mto\temp'
+--======================================================
+
+--:: Output temp and xml file path
+!sFileNameHeader = !tempDir + '\' + '3D_XML_' + !logmillid + '_' + !mdb + '_MTO.xml'
+!sFileNameTempData = !tempDir + '\' + !projCode + '_pipe_MTO_x.tmp'
+
+!FileHeader = Object File(!sFileNameHeader)
+!FileTempData = Object File(!sFileNameTempData)
+!FileTempData.Close()
+!FileTempData.DeleteFile()
+!FileTempData.Open('WRITE')
+
+--previesPipeNam and BranName, to skipp checking of pipe/bran attributes if same pipe/bran as previues element
+!previousPipeName = ''
+!previousBranName = ''
+
+-- xml formatingtgrccy
+!projName = !projName.replace('&','&amp;')
+!projName = !projName.replace('<','&lt;')
+!projName = !projName.replace('>','&gt;')
+!projName = !projName.replace('"','&quot;')
+!projName = !projName.replace(|'|,'&#39;')
+
+--sort unique
+
+!allElements = object array()
+--===============================================================================================================MODIFIED
+do !inputItem values !inputArray
+		!inputItemDbref = Object Dbref(!inputItem)
+		!allElements.AppendArray((!!CollectAllFor( 'PIPE HVAC EQUI BRAN VALV' ,'NOT UNSET(:ComosUID)',!inputItemDbref)))
+enddo
+--===============================================================================================================
+
+do !x values !allElements
+	--!aMtoObjects.AppendArray((!!CollectAllFor('BRAN MEM','NOT STR(PSPE OF BRAN) INSET (|/PRESSURE-PARTS| , |/WIBE| , |/MEKA| ,  |/CADCHVACSPEC| ) AND NOT BADREF(CATR)',!x)))
+	if !x.type eq 'BRAN' and !x.owner.type eq 'PIPE' then
+		!aMtoObjects.AppendArray((!!CollectAllFor('BRAN MEM','NOT STR(PSPE OF BRAN) INSET (|/PRESSURE-PARTS|) AND NOT BADREF(CATR) AND NOT BADREF(SPREF)',!x)))
+		!type = !x.type
+	elseif !x.type eq 'BRAN' and !x.owner.type eq 'HVAC' then
+		!type = 'HVACBRAN'
+	else
+		!type = !x.type
+	endif
+	
+	-- Get position information
+	!worldVolume = object ARRAY()
+	!worldVolume = !x.wvol
+	handle any
+		golabel /skipall
+	elsehandle none
+		if !worldVolume.empty() eq true then
+			golabel /skipall
+		endif
+	endhandle
+	!form = object POSITION()
+	!to = object POSITION()
+	!from = object POSITION('E ' & !worldVolume[1] & ' N ' & !worldVolume[2]& ' U ' & !worldVolume[3])
+	!to = object POSITION('E ' & !worldVolume[4] & ' N ' & !worldVolume[5]& ' U ' & !worldVolume[6])
+	!mid = !from.midPoint(!to)
+	
+	!posInfo = object ARRAY()
+	
+	!posInfo.append(!x.:ComosUID)
+	!posInfo.append(!type)
+	!posInfo.append(!x)
+
+	!posInfo.append(!from.east.value())
+	!posInfo.append(!from.north.value())
+	!posInfo.append(!from.up.value())
+
+	!posInfo.append(!mid.east.value())
+	!posInfo.append(!mid.north.value())
+	!posInfo.append(!mid.up.value())
+
+	!posInfo.append(!to.east.value())
+	!posInfo.append(!to.north.value())
+	!posInfo.append(!to.up.value())
+
+	!allPosInfo.append(!posInfo)
+	label /skipall
+	----------------------------------------------------------------------------------------------------
+enddo
+
+--rowCount for later use in XML definition, need to append for nuts n bolts.
+!rowCount = !aMtoObjects.Size() + 1
+
+
+do !x Values !aMtoObjects
+	--variables used in function, most of them are set inside function, ther
+	--Pipe attributes not reset at loop, as to keeep data if same pipe name
+	!rElementDN1 = 0
+	!rElementDN2 = 0
+	!rElementDN3 = 0
+	!sElementWeight = ''
+	!sElementWeight = ''
+	!rElementQuantityM = 0
+	!rElementQuantityPcs = 0
+	!rElementTotalWeight = 0
+	!sElementRefNo = ''
+	!sElementName = ''
+	!sElementDtxr = ''
+	!sElementDtxt = ''
+	!sElementType = ''
+	!sElementComment1 = ''
+	!rElementRadius = 0
+	!rElementHeight = 0
+	!rElementAng = 0
+	!sElementAng = ''
+	!sElementMaterialText = ''
+	!supportSpecial = false
+	--cladding not used..only for supports now, to show pipe material
+	!aElementBoltData = Object ARRAY()
+	-----
+	!format = object format()
+	!format.Fraction = true
+	!format.dp = 3
+	
+	--Site
+	!sSiteName = !x.OwnLst[1].Name
+	!sMachId = !x.OwnLst[1].:MPTMACHID
+	!sMillId = !x.OwnLst[1].:MPTMILLID
+	--Zone
+	--!expZone = object expression('ZONE') ? 
+	do !y Values !x.OwnLst
+		if !y.Type EQ 'ZONE' then
+			!sZoneName = !y.Name
+			break
+		endif
+	enddo
+	
+	--Pipe !x.Owner.Owner = Pipe element
+	!sPipeName = !x.Owner.Owner.Name
+	if !sPipeName NE !previousPipeName then
+		-- this is a new pipe, run this once to pick up branch level data
+		!sPipeWbs = !x.Owner.Owner.:MPTWBS
+		HANDLE ANY
+			!sPipeWbs ='unset'
+		ENDHANDLE
+		!sPipeComosUID = !x.Owner.Owner.:ComosUID
+		HANDLE ANY
+			!sPipeComosUID ='unset'
+		ENDHANDLE						
+		!sPipePurp = !x.Owner.Owner.Purpose	
+		
+		!sPipeComosPed = !x.Owner.Owner.:KPTPED
+		HANDLE ANY
+			!sPipeComosPed ='unset'
+		ENDHANDLE							
+		!sPipeName = !x.Owner.Owner.Name
+		!sPipeSprefName = !x.Owner.Owner.Pspec.Name
+		HANDLE ANY
+			!sPipeSprefName ='unset'
+		ENDHANDLE
+
+	else
+		--do nothing with pipe attributes, same pipe...
+	endif
+	!previousPipeName = !sPipeName
+
+	!sBranName = !x.Owner.Name
+	if !sBranName NE !previousBranName then
+		-- this is a new branch, run this once to pick up branch level data
+		$p BRANCH CHECK $!sBranName
+		!sBranName = !x.Owner.Name
+		!sBranPspe = !x.Owner.Pspec.Name
+		HANDLE ANY
+			!sBranPspe ='unset'
+		ENDHANDLE	
+		
+	endif
+	
+	!previousBranName = !sBranName
+	
+	!funcOfOwnerOfCatref = !x.catref.owner.function
+	handle any
+		!funcOfOwnerOfCatref = ''
+	endhandle
+	if !funcOfOwnerOfCatref.Occurs('MTOTYPE;') gt 0 then
+		!sElementType = !funcOfOwnerOfCatref.split(';').last()
+	elseif !x.spref.catref.owner.owner.name eq '/EVAP/VAPOUR;' then
+		if !x.owner.purp eq 'TTEE' then
+			!sElementType = 'TEE'
+		else
+			!sElementType = !x.Type
+		endif
+	else
+		!sElementType = !x.Type
+	endif
+	
+	!sElementRefNo = !x.string()
+	!sElementName = !x.Name	
+	!sElementDtxr = !x.DTXR
+	HANDLE ANY
+		!sElementDtxr ='unset'
+	ENDHANDLE
+	
+	!sElementDtxt = !x.DTXT
+	HANDLE ANY
+		!sElementDtxt ='unset'
+	ENDHANDLE
+	
+	
+	!sElementSprefName = !x.Spref.Name
+	HANDLE ANY
+	!sElementSprefName ='unset'
+	ENDHANDLE
+	
+	if !sElementType EQ 'ATTA' then
+		!exp = Object Expression('SPEC OF SPREF')
+		!specName = !exp.evaluate(!x).name
+		handle any
+		
+		elsehandle none
+			if !specName eq '/VOFSUPP-PRIM-SSG-ATTA-2013' then
+				!pcla = !x.cref.members.first()
+				handle any
+					!sElementDtxr = 'ATTA HAS NO CREF OR CREF HAS NO MEMBERS'
+				elsehandle none
+					!a1 = object array()
+					!a2 = object array()
+					!weightlist = object array()
+					if not def(!!realfmt) then
+						!!realfmt = Object Format()
+					endif
+					!sElementDtxr = !!VofSuppGetSSGDescription(!pcla, !a1, !a2, !weightlist)
+					!supportSpecial = true
+				endhandle
+				
+			elseif !specName eq '/VOFSUPP-PRIM-PSK-ATTA' then
+				!weight = 0
+				if not !x.cref.unset() and not !x.cref.badref() then
+					do !hangMember values !x.cref.members
+						!weight = !weight + !hangMember.rprop.UWIG
+						handle any
+						endhandle
+						--!weight = !weight + REAL( string( real(!hangMember.rprop.UWIG) , 'D3' ))
+						--handle any
+						--	q var !!error
+						--endhandle
+					enddo
+				endif
+				!weightlist[1] = !weight
+				!supportSpecial = true
+			endif
+		endhandle	
+		
+		if !x.:PARTNO eq 'MTO' then
+			!sElementDtxr = !x.:Comment1 
+			!sElementSprefName = 'SUPP'
+		endif
+	endif
+	
+	
+	
+	--xml formating
+	!sElementDtxr = !sElementDtxr.replace('&','&amp;')
+	!sElementDtxr = !sElementDtxr.replace('<','&lt;')
+	!sElementDtxr = !sElementDtxr.replace('>','&gt;')
+	!sElementDtxr = !sElementDtxr.replace('"','&quot;')
+	!sElementDtxr = !sElementDtxr.replace(|'|,'&#39;')
+	
+	!sElementDtxt = !sElementDtxt.replace('&','&amp;')
+	!sElementDtxt = !sElementDtxt.replace('<','&lt;')
+	!sElementDtxt = !sElementDtxt.replace('>','&gt;')
+	!sElementDtxt = !sElementDtxt.replace('"','&quot;')
+	!sElementDtxt = !sElementDtxt.replace(|'|,'&#39;')
+	
+	!sElementName = !sElementName.replace('&','&amp;')
+	!sElementName = !sElementName.replace('<','&lt;')
+	!sElementName = !sElementName.replace('>','&gt;')
+	!sElementName = !sElementName.replace('"','&quot;')
+	!sElementName = !sElementName.replace(|'|,'&#39;')
+	
+	!sPipeName = !sPipeName.replace('&','&amp;')
+	!sPipeName = !sPipeName.replace('<','&lt;')
+	!sPipeName = !sPipeName.replace('>','&gt;')
+	!sPipeName = !sPipeName.replace('"','&quot;')
+	!sPipeName = !sPipeName.replace(|'|,'&#39;')
+	
+	!sZoneName = !sZoneName.replace('&','&amp;')
+	!sZoneName = !sZoneName.replace('<','&lt;')
+	!sZoneName = !sZoneName.replace('>','&gt;')
+	!sZoneName = !sZoneName.replace('"','&quot;')
+	!sZoneName = !sZoneName.replace(|'|,'&#39;')
+	
+	!sBranName = !sBranName.replace('&','&amp;')
+	!sBranName = !sBranName.replace('<','&lt;')
+	!sBranName = !sBranName.replace('>','&gt;')
+	!sBranName = !sBranName.replace('"','&quot;')
+	!sBranName = !sBranName.replace(|'|,'&#39;')
+	
+	!sPipePurp = !sPipePurp.replace('&','&amp;')
+	!sPipePurp = !sPipePurp.replace('<','&lt;')
+	!sPipePurp = !sPipePurp.replace('>','&gt;')
+	!sPipePurp = !sPipePurp.replace('"','&quot;')
+	!sPipePurp = !sPipePurp.replace(|'|,'&#39;')
+	   
+	
+	!sElementMaterialText = !x.MTXX
+	HANDLE ANY
+		!sElementMaterialText ='unset'
+	ENDHANDLE
+	--xml formating
+	!sElementMaterialText = !sElementMaterialText.replace('&','&amp;')
+	!sElementMaterialText = !sElementMaterialText.replace('<','&lt;')
+	!sElementMaterialText = !sElementMaterialText.replace('>','&gt;')
+	!sElementMaterialText = !sElementMaterialText.replace('"','&quot;')
+	!sElementMaterialText = !sElementMaterialText.replace(|'|,'&#39;')
+	!sElementInsulationSpref = !x.Ispref.Name
+	HANDLE ANY
+		!sElementInsulationSpref ='unset'
+	ENDHANDLE	
+		
+	!sElementSprefPartCode = !x.Spref.:MPTPARTCODES
+	HANDLE ANY
+		!sElementSprefPartCode ='unset'
+	ENDHANDLE	
+	if !sElementSprefPartCode eq 'unset' then
+		!sElementSprefPartCode = !x.Spref.:AFRY_PTN 
+		HANDLE ANY
+			!sElementSprefPartCode ='unset'
+		ENDHANDLE
+	endif
+		
+	if !sElementType  EQ 'TUBI' then
+		!sElementWeight = !x.Spref.cmpref.Uweight
+		HANDLE ANY
+			!sElementWeight = '0'
+		ELSEHANDLE NONE
+			-----------Added by KSV on 07Apr2021---------------------------------------------------
+			!tubsprnm = !x.Spref.cmpref.name
+			handle any
+			elsehandle NONE
+				If matchw( !tubsprnm , '*PRTPTU*') eq TRUE then
+					!sElementWeight = str( $!sElementWeight * 1000 )
+				Endif
+				!sElementStdcode =  desc of cata of detr of $!x
+				handle any
+				elsehandle NONE
+					If matchw( !sElementStdcode , '*MPT ANSI Piping*') eq TRUE then
+						!sElementWeight = str( $!sElementWeight * 1000 )
+					Endif
+				endhandle
+			endhandle	
+			-----------------------------------------------------------------------------------------------
+		ENDHANDLE	
+	else
+		if !supportSpecial then
+			!sElementWeight = !weightlist.last().value().string(!format)
+			HANDLE ANY
+				!sElementWeight = '0'
+			ENDHANDLE	
+		else
+			!sElementWeight = !x.brwei.String('D3')
+			HANDLE ANY
+			!sElementWeight = '0'
+			ENDHANDLE
+		endif
+	endif
+	
+	if !sElementWeight EQ '0' then
+		!sElementWeight = !x.Spref.cmpref.Cweight
+		HANDLE ANY
+			!sElementWeight = '0'
+		ENDHANDLE
+	endif
+	
+	if !sElementWeight EQ '0' then
+		!sElementWeight = !x.Spref.Detref.:KPTCWEI.String('D3')
+		HANDLE ANY
+		!sElementWeight = '0'
+		ENDHANDLE	
+	endif
+	
+	!sElementWeight = !sElementWeight.Replace('( ','')
+	!sElementWeight = !sElementWeight.Replace(' )','')
+	!sElementWeight = !sElementWeight.Replace('kg','')
+	
+	!testReal = !sElementWeight.Real()
+	HANDLE ANY
+		!sElementWeight = '0'
+	ENDHANDLE
+	
+	!sVirtualSpecCode = !!getVirtualSpecCode(!x)
+	handle any
+		!sVirtualSpecCode = 'error'
+	endhandle
+	!sVirtualSpecCode = !sVirtualSpecCode.replace('&','&amp;')
+	!sVirtualSpecCode = !sVirtualSpecCode.replace('<','&lt;')
+	!sVirtualSpecCode = !sVirtualSpecCode.replace('>','&gt;')
+	!sVirtualSpecCode = !sVirtualSpecCode.replace('"','&quot;')
+	!sVirtualSpecCode = !sVirtualSpecCode.replace(|'|,'&#39;')
+	
+	if !sElementType  EQ 'TUBI' then
+		!sMtoUnits = 'm'
+		!rElementDN1 = !x.Lbore.Real()
+		!rElementDN2 = !x.Lbore.Real()
+		!rElementDN3 = !x.Lbore.Real()
+		!rElementQuantityM = !x.Mtle / 1000
+		!rElementQuantityM = !rElementQuantityM.value()
+		!rElementTotalWeight = !sElementWeight.Real() * !rElementQuantityM
+		handle any
+			!rElementTotalWeight = 0
+		endhandle
+	else	
+		!sMtoUnits = 'pcs'
+		!rElementDN1 = !x.Ppbo[1].Real()		
+		!rElementDN2 = !x.Ppbo[2].Real()
+		!rElementDN3 = !x.Ppbo[3].Real()
+		HANDLE ANY
+			!rElementDN3 = 0
+		ENDHANDLE
+		!rElementQuantityPcs = 1
+		!rElementTotalWeight = !sElementWeight.Real()		
+		!skey = !x.spref.detref.skey
+		HANDLE ANY
+			!skey ='unset'
+		ENDHANDLE		
+		if  !skey EQ 'TESO' or !skey EQ 'TPUL' then
+			!sElementType = 'TESO'
+		endif
+					
+		if !sElementType  EQ 'BEND'or !sElementType  EQ 'ELBO' or !sElementType  EQ 'TESO' then
+			!rElementRadius = !x.Radius
+			HANDLE(2,201)
+				!rElementRadius = 0
+			ENDHANDLE
+			!rElementAng = !x.Angle
+			if !rElementAng GE 89 AND !rElementAng LE 91 then
+				!sElementAng = '90'
+			elseif !rElementAng GE 44 AND !rElementAng LE 46 then
+				!sElementAng = '45'
+			else
+				!sElementAng = !rElementAng.real().convertunits('degree').value().nint().string()
+			endif
+			if !sElementType  EQ 'ELBO' or !sElementType  EQ 'TESO' then
+				if Matchwild(!sElementDtxr.Upcase(), '*45*') and !rElementAng GT 46 and not Matchwild(!sElementSprefName.Upcase(), '*90*')then
+					!sElementDtxr = !sElementDtxr + ', Angle is: ' + !x.Angle.string(!format) + ', Change to 90DEG Elbow!' 
+				endif
+			endif
+		elseif !sElementType  EQ 'FTUB' or !sElementType  EQ 'OLET' then
+			!rElementHeight = !x.Height	
+		elseif !sElementType  EQ 'ATTA' then
+			if Matchwild(!sElementSprefName.UpCase(), '*SUPP*') then
+				!sElementType = 'SUPPORT'
+			elseif Matchwild(!sElementDtxr.UpCase(), '*SUPP*') then
+				!sElementType = 'SUPPORT'
+			elseif !x.Atty EQ 'CCNN' then
+				!sElementType = 'COMMENT'
+			elseif !x.Atty EQ 'XXXX' or !x.Atty EQ 'SSSS' then
+				!sElementType = 'ISOMSPLIT'
+			elseif Matchwild(!sElementSprefName.UpCase(), '*VACUUM*') then
+				!sElementType = 'VRING'
+			endif	
+		endif
+		
+	--bolting related
+	--done in PML1 
+	!acon = !x.acon
+	handle any
+		$p error at $!x
+		!acon = 'xxxx'
+	endhandle
+	!lcon = !x.lcon
+	handle any
+		$p error at $!x
+		!lcon = 'xxxx'
+	endhandle
+		!pApL = 'x'
+		if !x.Type ne 'TUBI' and !acon.Substring(1,1) EQ 'F' then
+			!pApL = 'PA'
+		elseif !x.Type ne 'TUBI' and !lcon.Substring(1,1) EQ 'F' then
+			!trefType = !x.Owner.Tref.Type
+			handle any
+				!trefOk = false
+			elsehandle none
+				!trefOk = true
+			endhandle
+			
+			if !trefOk then
+				!flangeSequ = !x.Sequ
+				!otherFlangeSequ = !!CollectAllFor('','SUBSTRING(LCONN,1,1) EQ |F| AND SEQU GT $!flangeSequ',!x.owner)
+				if !otherFlangeSequ.Size() eq 0 then
+					--current flange has greatest sequ of all flange
+					-- => last flange, connected to something not branch
+					
+					!pApL = 'PL'
+				endif
+			endif
+		endif
+	
+		if !pApL NE 'x' then
+			$!x
+			!numberOfBoltElements = $!pApL BOLT TOTAL
+			HANDLE(2,1)
+				!numberOfBoltElements = 0
+				!boltError = 'BLTERROR_unequal_count '
+			ELSEHANDLE(61,638)
+				!numberOfBoltElements = 0
+				!boltError = 'BLTERROR_no_mating_flange '
+			ELSEHANDLE(2,220)
+				!numberOfBoltElements = 0
+				!boltError = 'BLTERROR_no_blrfarry_of_catref '	
+			ELSEHANDLE ANY
+				!numberOfBoltElements = 0
+				!boltError = 'BLTERROR_' + !!ERROR.Text
+			ENDHANDLE
+			
+			if !numberOfBoltElements EQ 0 then
+				!boltError = !boltError.replace('&','&amp;')
+				!boltError = !boltError.replace('<','&lt;')
+				!boltError = !boltError.replace('>','&gt;')
+				!boltError = !boltError.replace('"','&quot;')
+				!boltError = !boltError.replace(|'|,'&#39;')
+				
+				!dump = Object Array()	
+				!dump.Append(!boltError + !sElementRefNo)
+				!dump.Append('')
+				!dump.Append(0)
+				!dump.Append(0)
+				!dump.Append('BOLT')
+				!dump.Append(0)
+				!dump.Append('')
+				!dump.Append(0)
+				!aElementBoltData.Append(!dump)
+			else
+				do !i to $!numberOfBoltElements
+					!rtext = $!pApL BOLT $!i RTEXT
+					HANDLE ANY
+						var !rtext $!pApL BOLT $!i RTEXT
+						HANDLE ANY
+							!rtext = 'BLTERROR_rtext ' + !sElementRefNo
+						ENDHANDLE
+					ENDHANDLE
+					--xml formating
+					!rtext = !rtext.replace('&','&amp;')
+					!rtext = !rtext.replace('<','&lt;')
+					!rtext = !rtext.replace('>','&gt;')
+					!rtext = !rtext.replace('"','&quot;')
+					!rtext = !rtext.replace(|'|,'&#39;')
+					!xtext = $!pApL BOLT $!i Xtext
+					HANDLE ANY
+						var !xtext $!pApL BOLT $!i Xtext
+						HANDLE ANY
+							!xtext = 'BLTERROR_xtext ' + !sElementRefNo
+						ENDHANDLE
+					ENDHANDLE
+					!xtext = !xtext.replace('&','&amp;')
+					!xtext = !xtext.replace('<','&lt;')
+					!xtext = !xtext.replace('>','&gt;')
+					!xtext = !xtext.replace('"','&quot;')
+					!xtext = !xtext.replace(|'|,'&#39;')
+					
+					!dia = $!pApL BOLT $!i BDIA
+					HANDLE ANY
+						var !diaString $!pApL BOLT $!i BDIA
+						!dia = !diaString.Real()
+						HANDLE ANY
+							!dia = 0
+						ENDHANDLE
+					ENDHANDLE
+					!blen = $!pApL BOLT $!i BLEN
+					HANDLE ANY
+						var !blenString $!pApL BOLT $!i BLEN
+						!blen = !blenString.Real()
+						HANDLE ANY
+							!blen = 0
+						ENDHANDLE
+					ENDHANDLE
+					!noff= $!pApL BOLT $!i NOFF
+					HANDLE ANY
+						var !noffString $!pApL BOLT $!i NOFF
+						!noff = !noffString.Real()
+						HANDLE ANY
+							!noff = 0
+						ENDHANDLE
+					ENDHANDLE
+					!wei= $!pApL BOLT $!i BWEI
+					HANDLE ANY
+						var !weiString $!pApL BOLT $!i BWEI
+						!wei = !weiString.Real()
+						HANDLE ANY
+							!wei = 0
+						ENDHANDLE
+					ENDHANDLE
+					
+					--q var !wei
+					
+					if Matchwild(!rtext.UpCase(), '*BOLT*') or Matchwild(!rtext.UpCase(), '*MB*') then
+						!boltType = 'BOLT'
+					elseif Matchwild(!rtext.UpCase(), '*NUT*') then
+						!boltType = 'NUT'
+					elseif Matchwild(!rtext.UpCase(), '*WASH*') then
+						!boltType = 'WASHER'
+					else
+						!boltType = 'BOLT'
+					endif
+					
+					if !rtext.Substring(1,3) EQ 'in' and !boltType eq 'BOLT' then
+						!blen = !blen / 25.4
+						!rtext = !blen.string(!format) + !rtext
+					elseif !boltType eq 'BOLT' then
+						!rtext = !blen.string(!format) + !rtext
+					endif
+					!dump = Object Array()		
+					!dump.Append(!rtext)
+					!dump.Append(!xtext)
+					!dump.Append(!dia)
+					!dump.Append(!blen)
+					!dump.Append(!boltType)
+					!dump.Append(!noff)
+					!dump.Append(!rtext + '-' + !xtext + '-' + !dia.string(!format) + '-' + !blen.string(!format))
+					!dump.Append(!wei)
+					!aElementBoltData.Append(!dump)
+				enddo
+			endif
+		endif
+	endif
+	
+	
+	
+	if not !e3d then
+		!sElementDtxt = '-'
+	endif
+	
+	
+	
+	!rowCount = !rowCount + !aElementBoltData.Size()
+	-- ###################################################################################################################	
+	--Decimal formatting
+	!DN1form = !rElementDN1.Value().string('D0')
+	if (len(trim(!DN1form)) eq 0) then
+		!DN1form = '0'
+	endif
+	!DN2form = !rElementDN2.Value().string('D0')
+	if (len(trim(!DN2form)) eq 0) then
+		!DN2form = '0'
+	endif
+	!DN3form = !rElementDN3.Value().string('D0')
+	if (len(trim(!DN3form)) eq 0) then
+		!DN3form = '0'
+	endif
+	!rElementRadiusForm = !rElementRadius.Value().string('D0')
+	if (len(trim(!rElementRadiusForm)) eq 0) then
+		!rElementRadiusForm = '0'
+	endif
+	!rElementHeightForm = !rElementHeight.Value().string('D0')
+	if (len(trim(!rElementHeightForm)) eq 0) then
+		!rElementHeightForm = '0'
+	endif
+	!sElementAngForm = !sElementAng
+	if (len(trim(!sElementAngForm)) eq 0) then
+		!sElementAngForm = '0'
+	endif
+	!rElementTotalWeightForm = !rElementTotalWeight.Value().String('D3')
+	if (len(trim(!rElementTotalWeightForm)) eq 0) then
+		!rElementTotalWeightForm = '0'
+	endif
+	!rElementQuantityMForm = !rElementQuantityM.Value().String('D3')
+	if (len(trim(!rElementQuantityMForm)) eq 0) then
+		!rElementQuantityMForm = '0'
+	endif
+	!rElementQuantityPcsForm = !rElementQuantityPcs.Value().String('D0')
+	
+	!sElementWeightForm = !sElementWeight.real().String('D3')
+	if (len(trim(!sElementWeightForm)) eq 0) then
+		!sElementWeightForm = '0'
+	endif
+	----BOLT
+	
+	
+	----------------------------------------------------------------------------------------------------------------------
+	--PDMS 12.1 Format
+	if !pdmsVersion121 then
+		!farStr = '<Element' +' Ref = "'+!sElementRefNo+'" Type = "'+!sElementType+'" Name = "'+!sElementName+'" SpecRef = "'+!sElementSprefName+'" PartDescription = "'+!sElementDtxr+'" PartMaterial = "'+!sElementMaterialText+'" DN1 = "'+!DN1form+'" DN2 = "'+!DN2form+'" DN3 = "'+!DN3form+'" Radius = "'+!rElementRadiusForm+'" Height = "'+!rElementHeightForm+'" Angle = "'+!sElementAngForm+'" ElementIspe = "'+!sElementInsulationSpref+'" Weight_kg = "'+!rElementTotalWeightForm+'" Quantity_m = "'+!rElementQuantityMForm+'" Quantity_pcs = "'+!rElementQuantityPcsForm+'" UnitWeight = "'+!sElementWeightForm+'" MtoUnits = "'+!sMtoUnits+'" MptPartCodes = "'+!sElementSprefPartCode+'"'
+		!secStr = ' VirtualSpecCode = "'+!sVirtualSpecCode+'" T-DetailText = "'+!sElementDtxt+'" Site = "'+!sSiteName+'" PdmsZone = "'+!sZoneName+'" MachineId = "'+!sMachId+'" ComosSysUid = "'+!sPipeComosUID+'" ComosPed = "'+!sPipeComosPed+'" Wbs = "'+!sPipeWbs+'" Bran = "'+!sBranName+'" BranPspe = "'+!sBranPspe+'" Pipe = "'+!sPipeName+'" PipePspe = "'+!sPipeSprefName+'" PipePurp = "'+!sPipePurp+'" ProjectCode = "'+!projCode+'" Mdb = "'+!mdb+'" ProjectName = "'+!projName+'" MillId = "'+!sMillId+'"/>'
+		!FileTempData.WriteRecord(!farStr)
+		!FileTempData.WriteRecord(!secStr)
+		
+		if !aElementBoltData.Size() GT 0 then
+			do !z values !aElementBoltData	
+				--Decimal formatting
+				!z3Form = !z[3].Value().string('D0')
+				if (len(trim(!z3Form)) eq 0) then
+					!z3Form = '0'
+				endif
+				!z4Form = !z[4].Value().string('D0')
+				if (len(trim(!z4Form)) eq 0) then
+					!z4Form = '0'
+				endif
+				!z8Form = !z[8].Value().String('D3')
+				if (len(trim(!z8Form)) eq 0) then
+					!z8Form = '0'
+				endif
+				-----
+				--Quantity_m
+				-----
+				!z6Form = !z[6].Value().String('D0')
+				if (len(trim(!z6Form)) eq 0) then
+					!z6Form = '0'
+				endif
+				!firStr = '<Element' +' Ref = "'+!sElementRefNo+'" Type = "'+!z[5]+'" Name = "'+!sElementName+'" SpecRef = "'+!sElementSprefName+'" PartDescription = "'+!z[1]+'" PartMaterial = "'+!z[2]+'" DN1 = "'+!z3Form+'" DN2 = "'+!DN2form+'" DN3 = "'+!DN3form+'" Radius = "'+!rElementRadiusForm+'" Height = "'+!z4Form+'" Angle = "'+!sElementAngForm+'" ElementIspe = "'+!sElementInsulationSpref+'" Weight_kg = "'+!z8Form+'" Quantity_m = "'+'0'+'" Quantity_pcs = "'+!z6Form+'" UnitWeight = "'+!sElementWeightForm+'" MtoUnits = "'+!sMtoUnits+'" MptPartCodes = "'+!z[7]+'"'
+				!secStr = ' VirtualSpecCode = "'+!sVirtualSpecCode+'" T-DetailText = "'+!sElementDtxt+'" Site = "'+!sSiteName+'" PdmsZone = "'+!sZoneName+'" MachineId = "'+!sMachId+'" ComosSysUid = "'+!sPipeComosUID+'" ComosPed = "'+!sPipeComosPed+'" Wbs = "'+!sPipeWbs+'" Bran = "'+!sBranName+'" BranPspe = "'+!sBranPspe+'" Pipe = "'+!sPipeName+'" PipePspe = "'+!sPipeSprefName+'" PipePurp = "'+!sPipePurp+'" ProjectCode = "'+!projCode+'" Mdb = "'+!mdb+'" ProjectName = "'+!projName+'" MillId = "'+!sMillId+'"/>'
+				!FileTempData.WriteRecord(!firStr)
+				!FileTempData.WriteRecord(!secStr)
+			enddo
+		endif
+		
+		if !x.type ne 'TUBI' then
+			!mtorefArray = !x.mtoref
+			handle any
+				!mtorefArray = object array()
+			endhandle
+			do !mtoref values !mtorefArray
+				$!mtoref
+				handle (2,107)
+					$P Unknown reference of MTOREF
+				elsehandle none
+					!funcOfOwnerOfCatref = !mtoref.catref.owner.function
+					handle any
+						!funcOfOwnerOfCatref = ''
+					endhandle
+					if !funcOfOwnerOfCatref.Occurs('MTOTYPE;') gt 0 then
+						!sMtorefType = !funcOfOwnerOfCatref.split(';').last()
+					else
+						!sMtorefType = !mtoref.catref.gtype
+						handle any
+							!sMtorefType = 'MTOREF'
+						elsehandle none
+							if !sMtorefType eq '' then
+								!sMtorefType = 'MTOREF'
+							endif
+						endhandle
+					endif
+					!sMtorefRefNo = !sElementRefNo
+					!sMtorefSprefName = !mtoref.spref.name
+					!sMtorefDtxr = !mtoref.dtxr
+					!sMtorefMaterialText = !mtoref.mtxx
+					handle any
+						!sMtorefMaterialText = ''
+					endhandle
+					!rMtorefDN1 = !mtoref.catref.ppbore[1].Value().string(!format)
+					handle any
+						!rMtorefDN1 = '0'
+					endhandle
+					!rMtorefDN2 = !mtoref.catref.ppbore[2].Value().string(!format)
+					handle any
+						!rMtorefDN2 = '0'
+					endhandle
+					!rMtorefDN3 = !mtoref.catref.ppbore[3].Value().string(!format)
+					handle any
+						!rMtorefDN3 = '0'
+					endhandle
+					!rMtorefRadius = 0
+					!rMtorefHeight = 0
+					!sMtorefAng = 0
+					!sMtorefInsulationSpref = !sElementInsulationSpref 
+					!rMtorefTotalWeight = !mtoref.spref.cmpref.uweight
+					handle any
+						!rMtorefTotalWeight = 0
+					endhandle
+					!rMtorefQuantityM = 0
+					!rMtorefQuantityPcs = 1
+					!sMtorefName = ''
+					!sMtorefSprefPartCode = ''
+					!sMtorefDtxt = !mtoref.dtxt
+					handle any
+						!sMtorefDtxt = '0'
+					endhandle
+
+					
+					!sVirtualSpecCodeMtoref = !!getVirtualSpecCode(!mtoref)
+					handle any
+						!sVirtualSpecCodeMtoref = 'error'
+					endhandle
+					--Decimal formatting
+					if (len(trim(!rMtorefDN1)) eq 0) then
+						!rMtorefDN1 = '0'
+					endif
+					if (len(trim(!rMtorefDN2)) eq 0) then
+						!rMtorefDN2 = '0'
+					endif
+					if (len(trim(!rMtorefDN3)) eq 0) then
+						!rMtorefDN3 = '0'
+					endif
+					!rMtorefTotalWeightForm = !rMtorefTotalWeight.Value().String('D3')
+					if (len(trim(!rMtorefTotalWeightForm)) eq 0) then
+						!rMtorefTotalWeightForm = '0'
+					endif
+					!sMtorefWeight = !rMtorefTotalWeightForm
+					-- xml formating
+					!sMtorefDtxr = !sMtorefDtxr.replace('&','&amp;')
+					!sMtorefDtxr = !sMtorefDtxr.replace('<','&lt;')
+					!sMtorefDtxr = !sMtorefDtxr.replace('>','&gt;')
+					!sMtorefDtxr = !sMtorefDtxr.replace('"','&quot;')
+					!sMtorefDtxr = !sMtorefDtxr.replace(|'|,'&#39;')
+					
+					!sMtorefMaterialText = !sMtorefMaterialText.replace('&','&amp;')
+					!sMtorefMaterialText = !sMtorefMaterialText.replace('<','&lt;')
+					!sMtorefMaterialText = !sMtorefMaterialText.replace('>','&gt;')
+					!sMtorefMaterialText = !sMtorefMaterialText.replace('"','&quot;')
+					!sMtorefMaterialText = !sMtorefMaterialText.replace(|'|,'&#39;')
+					
+					!sVirtualSpecCodeMtoref = !sVirtualSpecCodeMtoref.replace('&','&amp;')
+					!sVirtualSpecCodeMtoref = !sVirtualSpecCodeMtoref.replace('<','&lt;')
+					!sVirtualSpecCodeMtoref = !sVirtualSpecCodeMtoref.replace('>','&gt;')
+					!sVirtualSpecCodeMtoref = !sVirtualSpecCodeMtoref.replace('"','&quot;')
+					!sVirtualSpecCodeMtoref = !sVirtualSpecCodeMtoref.replace(|'|,'&#39;')
+					
+					!firStr = '<Element'+' Ref = "'+!sMtorefRefNo+'" Type = "'+!sMtorefType+'" Name = "'+!sMtorefName+'" SpecRef = "'+!sMtorefSprefName+'" PartDescription = "'+!sMtorefDtxr+'" PartMaterial = "'+!sMtorefMaterialText+'" DN1 = "'+!rMtorefDN1.real().String('D0')+'" DN2 = "'+!rMtorefDN2.real().String('D0')+'" DN3 = "'+!rMtorefDN3.real().String('D0')+'" Radius = "'+!rMtorefRadius.real().String('D0')+'" Height = "'+!rMtorefHeight.real().String('D0')+'" Angle = "'+!sMtorefAng.real().String('D0')+'" ElementIspe = "'+!sMtorefInsulationSpref+'" Weight_kg = "'+!rMtorefTotalWeightForm+'" Quantity_m = "'+!rMtorefQuantityM.Value().String('D3')+'" Quantity_pcs = "'+!rMtorefQuantityPcs.Value().String('D0')+'" UnitWeight = "'+!sMtorefWeight+'" MtoUnits = "'+!sMtoUnits+'" MptPartCodes = "'+!sMtorefSprefPartCode+'"'
+					!secStr = ' VirtualSpecCode = "'+!sVirtualSpecCodeMtoref +'" T-DetailText = "'+!sElementDtxt+'" Site = "'+!sSiteName+'" PdmsZone = "'+!sZoneName+'" MachineId = "'+!sMachId+'" ComosSysUid = "'+!sPipeComosUID+'" ComosPed = "'+!sPipeComosPed+'" Wbs = "'+!sPipeWbs+'" Bran = "'+!sBranName+'" BranPspe = "'+!sBranPspe+'" Pipe = "'+!sPipeName+'" PipePspe = "'+!sPipeSprefName+'" PipePurp = "'+!sPipePurp+'" ProjectCode = "'+!projCode+'" Mdb = "'+!mdb+'" ProjectName = "'+!projName+'" MillId = "'+!sMillId+'"/>'
+					!FileTempData.WriteRecord(!firStr)
+					!FileTempData.WriteRecord(!secStr)
+				endhandle
+			enddo
+		endif
+	endif
+enddo
+
+
+--XML Definition
+-- Header
+!aPrintRowsHeader.Append('<?xml version="1.0" encoding="utf-8"?>')
+!aPrintRowsHeader.Append('<ElementInfo>')
+!aPrintRowsHeader.Append('<MTO>')
+--End of Header rows...
+
+--Last rows of tempdata
+!FileTempData.WriteRecord('</MTO>')
+--===============================================================================================================ADDED
+-- Write position information into xml
+!FileTempData.WriteRecord('<POS>')
+do !pos values !allPosInfo
+	!Str = '<Element' +' ComosUID = "'+!pos[1] +'" Type = "'+!pos[2] +'" Ref = "'+!pos[3].string() +'" From_E = "'+!pos[4].string('D2')+'" From_N = "'+!pos[5].string('D2')+'" From_U = "'+!pos[6].string('D2')+'" Mid_E = "'+!pos[7].string('D2')+'" Mid_N = "'+!pos[8].string('D2')+'" Mid_U = "'+!pos[9].string('D2')+'" To_E = "'+!pos[10].string('D2')+'" To_N = "'+!pos[11].string('D2')+'" To_U = "'+!pos[12].string('D2')+'"/>'
+	!FileTempData.WriteRecord(!Str)
+enddo
+!FileTempData.WriteRecord('</POS>')
+!FileTempData.WriteRecord('</ElementInfo>')
+--===============================================================================================================
+--Write files
+!FileHeader.WriteFile('OVERWRITE', !aPrintRowsHeader)
+!FileTempData.Close()
+
+SYSCOM 'TYPE $!sFileNameTempData >> $!sFileNameHeader'
+
+!FileTempData.DeleteFile()
+$p File created as $!sFileNameHeader
+----------------------------------------------
+!sTargetFileNameHeader = !sPdmsUserPath + '\' + '3D_XML_' + !logmillid + '_' + !mdb + '_MTO.xml'
+SYSCOM 'MOVE "$!sFileNameHeader" "$!sTargetFileNameHeader"'
+$p File moved to $!sPdmsUserPath
+
+--Error catching to close open temp file and delete
+label /ERRORCLOSE
+HANDLE ANY
+!FileTempData.Close()
+!FileTempData.DeleteFile()
+$p Error, no MTO created
+q var !!ERROR
+ENDHANDLE
+
+endfunction
