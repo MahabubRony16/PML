@@ -1,0 +1,198 @@
+-- Need to drop tagtype from bucket
+
+define object xmlparser
+
+	member .filepath is string
+	member .exportTypeFormat is string
+	member .root is bucket
+	member .allTags is array
+	
+endobject
+
+
+define method .xmlparser()
+
+
+endmethod
+define method .ParseXML(!xmlFilePath is string) is bucket
+	!xmlFile = object file(!xmlFilePath)
+	!xmlFileContent = !xmlFile.ReadFile()
+	if !xmlFileContent[1].substring( 1 , 2) eq '<?' and !xmlFileContent[1].substring( -2 , 2) eq '?>' then
+		!xmlFileContent.remove(1)
+	endif
+	!fileContent = array()
+	-- !this.formate(!xmlFileContent)
+	-- return
+	do !line values !xmlFileContent
+		!line = !line.trim().replace('	', '')
+		-- need to solve : more than one comment in one line
+		!comment = '<!--' + !line.after('<!--').before('-->') + '-->'
+		!line = !line.replace(!comment , '')  
+		!fileContent.append(!line)
+	enddo
+	!xmlArray = !this.MakeArray(!fileContent)
+	!this.allTags = !xmlArray
+	!this.root = !xmlArray[1]
+	return !xmlArray[1]
+endmethod
+
+define method .formate(!rawLines is array) is array
+	!lines = array()
+	do !rawLine values !rawLines
+		!rawLine = !rawLine.trim().replace('	', '')
+		!numofcomm = !rawLine.occurs('<!--')
+		if !numofcomm gt 0 then
+			do !n indices !numofcomm
+				!comment = '<!--' + !rawLine.after('<!--').before('-->') + '-->'
+				!rawLine = !rawLine.replace(!comment , '')
+			enddo
+		endif
+		!linetoarray = array()
+		!numofstarttag = !rawLine.occurs('<') - !rawLine.occurs('</')
+		if !numofstarttag gt 0 then
+			!tag1 = !rawLine.before('<')
+			!linetoarray.append(!tag1)
+			do !n values !numofstarttag
+				!line = !rawLine.after('>')
+				!tag1 = !line.before('<')
+				!linetoarray.append(!tag1)
+			enddo
+			!lines.appendarray(!linetoarray)
+		else
+			!lines.append(!rawLine)
+		endif
+	enddo
+	-- Q VAR !lines
+	return !lines
+endmethod
+
+define method .MakeArray(!fileContent is array) is array
+	!a = array()
+	do !str values !fileContent
+		!b = !this.CreateNode(!str)
+		!a.append(!b)
+	enddo
+	!level = !this.CreateLevel(!a)
+	!allbucket = array()
+	do !aa values !a
+		if !aa.tagType ne 'end' then
+			!allbucket.append(!aa)
+		endif
+	enddo
+	!hier = !this.CreateHierarchy(!allbucket)
+	return !hier
+endmethod
+define method .CreateNode(!str is string)is bucket
+	!first = !str.substring(1 , 1)
+	!last = !str.substring(-1 , 1)
+	!tag = !str.after('<').before('>')
+	if !tag.substring(1 , 1) eq '/' then
+		!tag = !tag.after('/')
+	endif
+	!tagName = !tag.before(' ')
+	!startTag = '<' + !tag + '>'
+	!endTag = '</' + !tagName + '>'
+	!arr = array()
+	!w = !str.occurs(!startTag)
+	!x = !str.occurs(!endTag)
+	if !str.occurs(!startTag) gt 0 and !str.occurs(!endTag) gt 0 then
+		-- Content tag
+		!content = !str.after(!startTag).before(!endTag)
+		!bucket = object bucket('content' , !tagName , !content)
+	elseif !str.occurs(!startTag) gt 0 and !str.occurs(!endTag) lt 1 then
+		-- Start tag
+		!attributes = !this.GetAllAttributes(!str , '')
+		!bucket = object bucket('start' , !tagName , !attributes)
+	elseif !str.occurs(!startTag) lt 1 and !str.occurs(!endTag) gt 0 then
+		-- End tag
+		!bucket = object bucket('end' , !tagName)
+	else
+		!bucket = object bucket()
+	endif
+	
+	return !bucket
+endmethod
+define method .CreateHierarchy(!arr is array)is array
+	!ab = array()
+	do !i from !arr.size() to 1 by -1
+		!lev1 = !arr[!i].level
+		-- !buck = !arr[!i]
+		do !x from !i - 1 to 1 by -1
+			!lev2 = !arr[!x].level
+			if !lev2 lt !lev1 then
+				!arr[!x].children.append(!arr[!i])
+				break
+			endif
+		enddo
+	enddo
+	return !arr
+endmethod
+define method .CreateLevel(!arr is array)is array
+	!a = 0
+	!abcd = array()
+	do !b values !arr
+		!type = !b.tagtype
+		if !type eq 'end' then
+			!c = !c - 1
+			!a = !a - 1
+			!b.level = !c
+			!abcd.append(!c)
+		elseif !type eq 'start' then
+			!a = !a + 1
+			!d = !a
+			!c = !a + 1
+			!b.level = !a
+			!abcd.append(!a)
+		elseif !type eq 'content' then
+			!b.level = !c
+			!abcd.append(!c)
+		endif
+	enddo
+	return !abcd
+endmethod
+
+define method .GetAllAttributes(!content is string , !tag is string) is array
+	-- it assumes that the content starts with a tag and ends with a tag
+	!str = !content
+	!str = !str.replace('<' , '').replace('>' , '')
+	!tagName = !str.before(' ').trim().replace('	', '')
+	!str = !str.after(' ').trim()
+	!a = ''
+	!b = ''
+	!attrib = array()
+	!attribNam = array()
+	!attribVal = array()
+	!n = 0
+	do !x from 1 to len(!str)
+		!char = !str.substring(!x , 1)
+		if !char eq '=' then
+			!attribNam.append(!a.trim())
+			!a = ''
+			
+		elseif !char eq '"' then
+			!n = !n + 1
+			if !n eq 2 then
+				!attribVal.append(!a.trim())
+				!n = 0
+				!a = ''
+			endif
+		else
+			!a = !a + !char
+		endif
+	enddo
+	!attrib.append(!attribNam)
+	!attrib.append(!attribVal)
+	return !attrib
+endmethod
+
+--can be dropped, added method in the bucket object
+define method .FindAll(!tagName is string) is array
+	!alltags = !this.allTags
+	!tags = array()
+	do !tag values !alltags
+		if !tag.tag eq !tagName then
+			!tags.append(!tag)
+		endif
+	enddo
+	return !tags
+endmethod
