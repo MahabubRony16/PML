@@ -1,0 +1,161 @@
+-- Need to drop tagtype from bucket
+
+define object exporter
+
+	member .filepath is string
+	member .exportFormat is string
+	member .table is array
+	member .tempFile is file
+endobject
+
+
+define method .exporter()
+
+
+endmethod
+-----------------------------------------------------------------------------------------------------
+--
+-- Method:      .AddHeaderToCSV
+--
+-- Description: Add the first row of the table to the csv file - Runs when data table has a header
+--
+-----------------------------------------------------------------------------------------------------
+define method .AddHeaderToCSV()
+	!header = !this.table[1]
+	!line = '"' + !header[1] + '"'
+	do !in from 2 to !header.size()
+		if ( len(!line) + len(!header[!in]) ) lt 1024 then
+			if !in + 1 le !header.size() then
+				if ( len(!line) + len(!header[!in]) + len(!header[!in + 1]) ) gt 1024 then
+					!line = !line + ',' + '"' + !header[!in]
+				else
+					!line = !line + ',' + '"' + !header[!in] + '"'
+				endif
+			endif
+			
+		else
+			!li[1] = !line
+			!this.tempFile.WriteFile('APPEND' , !li)
+			!line = '","' + !header[!in] + '"'
+		endif
+	enddo
+	!line = !line + ',' + '"' + !header[!in] + '"'
+	!li[1] = !line
+	!this.tempFile.WriteFile('APPEND' , !li)
+	!this.table.RemoveFirst()
+endmethod
+-----------------------------------------------------------------------------------------------------
+--
+-- Method:      .ReadyTempFileToWrite
+--
+-- Description: Delete if any temp file exists with the same name, and create one to write data
+--				in the same location where csv file will be created
+-- Arguments: 1. CSV file path
+--
+-----------------------------------------------------------------------------------------------------
+define method .ReadyTempFileToWrite(!filepath is string) is boolean
+	!tmp = '.tmp'
+	!x = 0
+	LABEL /CheckAgain
+	!csvTempFilePath = !filePath.replace('.csv' , !tmp)
+	!this.tempFile = Object File(!csvTempFilePath)
+	handle any
+		q var !!ERROR
+		return false
+	endhandle
+	!this.tempFile.DeleteFile()
+	handle any
+		!x = !x + 1
+		!tmp = |$!x| + '.tmp'
+		GOLABEL /CheckAgain
+	endhandle
+		
+	!this.tempFile.Open('WRITE')
+	handle any
+		!x = !x + 1
+		!tmp = |$!x| + '.tmp'
+		GOLABEL /CheckAgain
+	endhandle
+	return true
+endmethod
+-----------------------------------------------------------------------------------------------------
+--
+-- Method:      .CloseTempFile
+--
+-- Description: Close the temp file.
+--
+-----------------------------------------------------------------------------------------------------
+define method .CloseTempFile() is boolean
+	!this.tempFile.Close()
+	handle any
+		q var !!ERROR
+		return false
+	endhandle
+	!this.tempFile.DeleteFile()
+	handle any
+		q var !!ERROR
+		return false
+	endhandle
+	return true
+endmethod
+-----------------------------------------------------------------------------------------------------
+--
+-- Method:      .ExportToCSV
+--
+-- Description: Export data from the provided array as CSV file
+-- Arguments: 1. 2 dimensional array
+-- 			  2. CSV file path
+-- 			  3. Whether array has header row
+--
+-----------------------------------------------------------------------------------------------------
+define method .ExportToCSV(!table is array , !filePath is string , !headerExists is boolean)
+	!tmp = !this.ReadyTempFileToWrite(!filePath)
+	if not !tmp then
+		$P ERROR!! Unable to create temp file!
+		return
+	endif
+	!this.table = !table
+	!callvbsformatter = false
+	if !headerExists then
+		!this.AddHeaderToCSV()
+	endif
+	do !row values !this.table
+		!line = '"' + !row[1].string() + '"'
+		do !in from 2 to !row.size()
+			if ( len(!line) + len(!row[!in].string()) ) lt 1024 then
+				!line = !line + ',' + '"' + !row[!in].string() + '"'
+			else
+				!li[1] = !line
+				!this.tempFile.WriteFile('APPEND' , !li)
+				!line = '\~' + '"' + !row[!in].string() + '"'
+				!callvbsformatter = true
+			endif
+		enddo
+		!li[1] = !line
+		
+		!this.tempFile.WriteFile('APPEND' , !li)
+	enddo
+	!this.tempFile.Close()
+	if !callvbsformatter then
+	SYSCOM 'X:\PDMSUSER\jklhasanma\PMLLIB\PipeMTO\OVIK\csvformatter.vbs "$!this.tempFile" "$!filePath"'
+	handle any
+		$P ERROR!! Unable to create CSV file from temp file!
+	endhandle
+	else
+		COPYFILE /$!this.tempFile /$!filePath overwrite
+		handle any
+			$P ERROR!! Unable to create CSV file from temp file!
+		endhandle
+	endif
+	!this.tempFile.DeleteFile()
+endmethod
+-----------------------------------------------------------------------------------------------------
+--
+-- Method:      .ExportToXML
+--
+-- Description: Export data from the provided array as CSV file. (future scope)
+--
+-----------------------------------------------------------------------------------------------------
+define method .ExportToXML(!filePath is string)
+
+endmethod
