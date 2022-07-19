@@ -1,0 +1,78 @@
+define object bucket
+	member .tagtype is string
+	member .level is real
+	member .tag is string
+	member .content is string
+	member .attributes is array
+	member .children is array
+
+endobject
+define method .bucket(!tagtype is string , !tag is string , !content is string , !attributes is array)
+	!this.tagtype = !tagtype
+	!this.tag = !tag
+	!this.content = !content
+	!this.attributes = !attributes
+endmethod
+
+define method .bucket(!tagtype is string , !tag is string , !attributes is array)
+	!this.tagtype = !tagtype
+	!this.tag = !tag
+	!this.attributes = !attributes
+endmethod
+
+define method .bucket(!tagtype is string , !tag is string , !content is string)
+	!this.tagtype = !tagtype
+	!this.tag = !tag
+	!this.content = !content
+endmethod
+
+define method .bucket(!tagtype is string , !tag is string)
+	!this.tagtype = !tagtype
+	!this.tag = !tag
+endmethod
+
+define method .bucket(!level is real)
+	!this.level = !level
+endmethod
+
+define method .GetAttribVal(!attribName is string) is string
+	!ind = !this.attributes[1].find(!attribName)
+	if !ind.set() then
+		return !this.attributes[2][!ind[1]]
+	else
+		return ''
+	endif
+endmethod
+
+-- define method .GetChildWithName(!childName is string) is array
+	-- !children = array()
+	-- do !c values !this.children
+		-- if !c.tag eq !childName then
+			-- !children.append(!c)
+		-- endif
+	-- enddo
+	-- return !children
+-- endmethod
+
+define method .GetNodes(!nodeName is string , !elem is bucket , !ch is array)
+	if !elem.tag eq !nodeName then
+		!ch.append(!elem)
+	endif
+	!childs = !elem.children
+	if !childs.size() gt 0 then
+		do !child values !childs
+			if !child.tag eq !nodeName then
+				!ch.append(!child)
+			endif
+			!this.GetNodes(!nodeName , !child , !ch)
+		enddo
+	endif
+endmethod
+
+define method .GetNodesByTagName(!nodeName is string) is array
+	!ch = array()
+	do !x values !this.children
+		!this.GetNodes(!nodeName , !x , !ch)
+	enddo
+	return !ch
+endmethod
