@@ -1,0 +1,234 @@
+RULE SET DESP NUM 2  Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT )
+RULE SET DESP NUM 3  Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT )
+RULE SET DESP NUM 5  Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT )
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'NOZZLES' THEN
+			VAR !NOZZLES COLLECT ALL NOZZ FOR $!SUBE
+			DO !NOZZLE VALUES !NOZZLES
+				!nozzName = !NOZZLE.DBREF().NAME
+				-- $P $!nozzName
+				IF MATCHW(!nozzName,'*N-1*') THEN
+					$P $!nozzName ()
+					$!NOZZLE
+					RULE SET DESP NUM 2  Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT )
+					RULE SET DESP NUM 3  Dynamic Rule ( ATTRIB DESP[1 ] OF EQUIPMENT )
+					RULE SET DESP NUM 5  Dynamic Rule ( ATTRIB DESP[2 ] OF EQUIPMENT )
+				ELSEIF MATCHW(!nozzName,'*N-2*') THEN
+					$P $!nozzName []
+					$!NOZZLE
+					RULE SET DESP NUM 2  Dynamic Rule ( ATTRIB DESP[3 ] OF EQUIPMENT  )
+					RULE SET DESP NUM 3  Dynamic Rule ( ATTRIB DESP[4 ] OF EQUIPMENT  )
+					RULE SET DESP NUM 5  Dynamic Rule ( ATTRIB DESP[5 ] OF EQUIPMENT  )
+					-- RULE SET POS Dynamic Rule ( S ( ATTRIB DESP[22 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[3 ]  ) E ( 0 ) U ( ATTRIB DESP[19 ] OF EQUIPMENT  + ATTRIB DESP[28 ] OF EQUIPMENT  ) )
+
+				ENDIF
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'NOZZLES' THEN
+			-- !subeName = !subeName.REPLACE('NOZZLE', 'NOZZLES')
+			-- !SUBE.DBREF().Name = !subeName
+			VAR !NOZZLES COLLECT ALL NOZZ FOR $!SUBE
+			DO !NOZZLE VALUES !NOZZLES
+				!nozzName = !subeName + '/' + 'N-1'
+				!NOZZLE.DBREF().Name = !nozzName
+				HANDLE ANY
+					!nozzName = !subeName + '/' + 'N-2'
+					!NOZZLE.DBREF().Name = !nozzName
+				ENDHANDLE
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'NOZZLES' THEN
+			VAR !NOZZLES COLLECT ALL NOZZ FOR $!SUBE
+			DO !NOZZLE VALUES !NOZZLES
+				!nozzName = !NOZZLE.DBREF().NAME
+				IF MATCHW(!nozzName,'*N-2*') THEN
+					$P $!nozzName []
+					$!NOZZLE
+					DESP RHNZ 1070 1620 0 50mm 0mm 6mm 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 RECT 0 0 0 0 0 0 0 0 0 RECT 150 0mm 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+				ENDIF
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'TRANSMISSION' THEN
+			VAR !PYRAS COLLECT ALL PYRA FOR $!SUBE
+			DO !PYR VALUES !PYRAS
+				!PYR.DBREF().XTOP = 600
+				!PYR.DBREF().XBOT = 600
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	!moveObj = ARRAY()
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'MOTOR' THEN
+			!motorSubeName = !SUBE.DBREF().Name
+			!MEMS = !SUBE.DBREF().MEM
+			$!subeName
+			DO !MEM VALUES !MEMS
+				!name = !MEM.Name
+				!comp = !name.SPLIT('/').LAST()
+				IF !comp eq 'BOX_2' OR !comp eq 'BOX_3' OR !comp eq 'BOX_4' OR !comp eq 'BOX_5' OR !comp eq 'BOX_6' OR !comp eq 'CYL_5' OR !comp eq 'CYL_6' OR !comp eq 'PYR_2' THEN
+					!moveObj.APPEND(!name)
+				ENDIF
+			ENDDO
+		ENDIF
+	ENDDO
+	!newSubeName = !motorSubeName.REPLACE('MOTOR', 'MOTOR_FRAME')
+	$P $!newSubeName
+	NEW SUBE/$!newSubeName
+	DO !OBJ VALUES !moveObj
+		$P $!OBJ
+		incl $!OBJ
+	ENDDO
+ENDDO
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	!moveObj = ARRAY()
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'MOTOR_FRAME' THEN
+			!motorSubeName = !SUBE.DBREF().Name
+			VAR !BOXES COLLECT ALL BOX FOR $!SUBE
+			VAR !CYLIS COLLECT ALL CYLI FOR $!SUBE
+			VAR !PYRAS COLLECT ALL PYRA FOR $!SUBE
+			$!subeName
+			!n = 1
+			DO !BOX VALUES !BOXES
+				!name = !subeName + '/' + 'BOX_1'
+				!BOX.DBREF().NAME = !name
+				handle any
+					!name = !subeName + '/' + 'BOX_2'
+					!BOX.DBREF().NAME = !name
+					handle any
+						!name = !subeName + '/' + 'BOX_3'
+						!BOX.DBREF().NAME = !name
+					endhandle
+				endhandle
+			ENDDO
+			DO !CYLI VALUES !CYLIS
+				!name = !subeName + '/' + 'CYL_1'
+				!CYLI.DBREF().NAME = !name
+				handle any
+					!name = !subeName + '/' + 'CYL_2'
+					!CYLI.DBREF().NAME = !name
+				endhandle
+			ENDDO
+			DO !PYRA VALUES !PYRAS
+				!name = !subeName + '/' + 'PYR_1'
+				!PYRA.DBREF().NAME = !name
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	!moveObj = ARRAY()
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'MOTOR_FRAME' THEN
+			!motorSubeName = !SUBE.DBREF().Name
+			VAR !BOXES COLLECT ALL BOX FOR $!SUBE
+			VAR !CYLIS COLLECT ALL CYLI FOR $!SUBE
+			VAR !PYRAS COLLECT ALL PYRA FOR $!SUBE
+			$!subeName
+			!n = 1
+			DO !BOX VALUES !BOXES
+				!boxName = !BOX.DBREF().Name
+				!comp = !boxName.SPLIT('/').LAST()
+				IF !comp eq 'BOX_1' THEN
+					$!BOX
+					Q CE
+					RULE SET POS Dynamic Rule ( N ( 0 ) E ( 0.5 * ATTRIB YLEN ) D ( ATTRIB DESP[19 ] OF EQUIPMENT  + ATTRIB DESP[10 ] OF EQUIPMENT  - ATTRIB DESP[13 ] OF EQUIPMENT  - 0.5 * ATTRIB DESP[16 ] OF EQUIPMENT  ) )
+				ENDIF
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	!moveObj = ARRAY()
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'MOTOR_FRAME' THEN
+			!SUBE.DBREF().PURP = 'MAIN'
+		ENDIF
+	ENDDO
+ENDDO
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	!moveObj = ARRAY()
+	VAR !SUBES COLLECT ALL SUBE FOR $!EQUI
+	DO !SUBE VALUES !SUBES
+		!subeName = !SUBE.DBREF().Name
+		!comp = !subeName.SPLIT('/').LAST()
+		IF !comp eq 'MOTOR_FRAME' THEN
+			VAR !PYRAS COLLECT ALL PYRA FOR $!SUBE
+			!n = 1
+			DO !PYR VALUES !PYRAS
+				$!PYR
+				!nam = !PYR.DBREF().NAME
+				$P $!nam
+				RULE SET POS Dynamic Rule ( S ( 0 ) E ( 0.25 * (XTOP + XBOT) ) D ( 0.5 * ATTRIB HEIG + 210 mm ) )
+			ENDDO
+		ENDIF
+	ENDDO
+ENDDO
+
+
+VAR !EQUIS COLLECT ALL EQUI FOR CE
+DO !EQUI VALUES !EQUIS
+	!EQUI.DBREF().:E-PLOT = 'AIRFAN_VBELT_LG.plt'
+ENDDO
