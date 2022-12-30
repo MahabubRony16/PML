@@ -1,0 +1,252 @@
+------------------------------------------------------------------------
+--
+--   File:          ValITCreateIsometric.pmlfrm
+--   Type:          Form Definition
+--   Group:         Piping / Electrical
+--   Module:        Design
+--
+-- Author:          Tata Consulting Engineers Limited
+--
+-- Description:
+-- Extract Isometric from PDMS model
+--
+------------------------------------------------------------------------
+  
+ Import 'GridControl'
+ handle ANY
+ endhandle
+ 
+ Import 'pmlFileBrowser'
+ handle (1000,0)
+ endhandle
+ !banner = banner
+
+setup form !!UpdateUDA resize
+
+  var !b banner
+
+if !b.split(' ')[2] eq 'E3D' then
+	using namespace 'Aveva.Core.Presentation'
+else 
+ using namespace 'Aveva.Pdms.Presentation'
+endif
+	button .selectce    |Select CE|   at xmin + .25 ymax + 0.25         call |!this.selectce()| wid 8         Tooltip |Select Current Element|
+	path right
+	para .cename text '------------------------------'
+	path down
+	option   .elemType call |!this.RefreshTable()| wid 6     Tooltip |Select element type|
+  frame .tagsFrame || at xmin.selectce ymax.selectce + 0.5 anchor all
+    container .gridFrame PmlNetControl 'NET' anchor all width 60 height 12
+  exit
+  path down
+  button .update    |Update UDA|          anchor left + bottom  at xmin+.5 ymax                         call |!this.update()|          Tooltip |Copy module to current hierarchy| WIDTH 9
+
+	member .refElem is DBREF
+	member .pipes is ARRAY
+	member .scope is STRING
+	member .exclFileName is STRING
+	member .grid is NetGridControl 
+	member .aGridSelectedElements is ARRAY
+	member .aGridElements is ARRAY
+	member .aGridHeadings is ARRAY
+	member .aGridAttributes is ARRAY
+	member .dataGridDataRow is ARRAY
+	member .bLogOutput is BOOLEAN
+	member .errorOutput is ARRAY
+	member .arrUDAs is ARRAY
+	member .intNumUDAs is real
+	member .elementType is string
+	member .xmlRoot is bucket
+	member .elementTypeList is ARRAY
+exit
+------------------------------------------------------------------------
+define method .UpdateUDA()
+	!this.formTitle = 'Update UDA'
+	var !b banner
+	--if !b.split(' ')[2] eq 'Everything3D' then
+	if !b.split(' ')[2] eq 'E3D' then
+		using namespace 'Aveva.Core.Presentation'
+	else 
+	 using namespace 'Aveva.Pdms.Presentation'
+	endif
+	!this.refElem = !!CE
+	!this.grid = object NETGRIDCONTROL()
+	!this.gridFrame.control = !this.grid.handle()
+	!this.grid.addeventhandler('OnPopup', !this, 'RightClickGrid')
+	
+	!configXmlPath = 'X:\PDMSUSER\jklhasanma\PMLLIB\OVIK\config.xml'
+	!xmlparse = object xmlparser()
+	!root = !xmlparse.ParseXML(!configXmlPath)
+	!elements = !root.Children
+	!arrElementListRaw = !root.GetChildTagNames()
+	!this.xmlRoot = !root
+	DO !elem VALUES !arrElementListRaw
+		!this.elementTypeList.Append(!elem.UpCase())
+	ENDDO
+	!this.elemType.dtext = !this.elementTypeList
+	!this.elemType.select('dtext',!this.elementTypeList[1])
+	!this.RefreshTable()
+	!this.setGridProp()
+endmethod
+
+define method .setGridProp()
+	!this.grid.EditableGrid(TRUE)
+	!this.grid.SetEditableColumn(1, FALSE)
+	!this.grid.ResizeAllColumns()
+	!this.grid.ColumnSummaries(FALSE)
+	!this.grid.HeaderSort(TRUE)
+	!this.grid.OutlookGroupStyle(FALSE)
+	!this.grid.ColumnExcelFilter(TRUE)
+	!this.grid.feedbackSuccessColor('Green')
+	!this.grid.feedbackFailColor('Red')
+	!this.grid.syntaxErrorColor('Orange')
+	!this.grid.ReadOnlyCellColor('Grey')
+	!this.grid.AUTOFITCOLUMNS()
+endmethod
+
+define method .RefreshTable()
+	!this.cename.val = |$!this.refElem.Name|
+	IF !this.elementTypeList.Find(!this.refElem.Type).Size() GT 0 THEN
+		!this.scope = 'single'
+		!node = !this.xmlRoot.GetNodesByTagName(!this.refElem.Type)
+		!udaNames = !node[1].GetValuesByTagName('UDA')
+		!this.aGridAttributes = !udaNames
+		!this.GridAttributes()
+		!this.setGridProp()
+		!this.grid.ColumnExcelFilter(FALSE)
+	ELSE
+		!this.scope = 'multi'
+		!selectedElement = !this.elemType.selection()
+		!this.pipes = !!collectAllFor(|$!selectedElement|, ||, !this.refElem)
+		!node = !this.xmlRoot.GetNodesByTagName(!selectedElement)
+		!udaNames = !node[1].GetValuesByTagName('UDA')
+		!this.aGridAttributes = !udaNames
+		!this.MultiPipesGridAttributes()
+		!this.setGridProp()
+	ENDIF
+endmethod
+
+define method .GetUdas(!buck is bucket, !tagName is string) is array
+  return !buck.GetValuesByTagName(!tagName)
+endmethod
+------------------------------------------------------------------------
+define method .RightClickGrid(!data is ARRAY)
+  !this.gridFrame.popup = !this.PipeIso
+  !telements = !data[1]
+  Handle any
+  Endhandle
+  !this.gridFrame.showPopup(!data[0], !data[1])
+endmethod
+
+
+define method .navigate()
+!selection = !this.grid.getSelectedRows()
+$!selection[1][1]
+  Handle ANY
+   return error 1 '$!!error.text'
+  Endhandle
+endmethod
+
+define method .RemovefromIsoList()
+ !this.grid.DeleteSelectedRows()
+endmethod
+
+define method .MultiPipesGridAttributes()
+	using namespace 'Aveva.Core.Presentation'
+	!this.aGridHeadings = Object Array()
+	!this.aGridHeadings.Append('Pipe')
+	
+	!this.aGridHeadings.AppendArray(!this.aGridAttributes)
+	
+	!elem = !this.refElem
+	!arrAllUDAs = !elem.UDALIS
+	!gridRows = Object Array()
+	DO !pipe VALUES !this.pipes
+		!pipeName = !pipe.Name
+		!rowVals =  Object Array()
+		!rowVals.Append(!pipe.Name)
+		DO !uda VALUES !this.aGridAttributes
+			!rowVals.Append(!pipe.$!uda)
+		ENDDO
+		!gridRows.Append(!rowVals)
+	ENDDO
+	
+	!tableName = 'UDA'
+	!nds = object NETDATASOURCE(!tableName, !this.aGridHeadings, !gridRows)
+	!this.grid.bindToDataSource(!nds)
+  
+endmethod
+
+define method .GridAttributes()
+	using namespace 'Aveva.Core.Presentation'
+	!this.aGridHeadings= Object Array()
+	!this.aGridHeadings.Append('Attribute')
+	!this.aGridHeadings.Append('Value')
+	
+	!elem = !this.refElem
+	!arrGridAttributes = !this.aGridAttributes
+	!gridRows = Object Array()
+	DO !uda VALUES !arrGridAttributes
+		!temp = Object Array()
+		!temp.Append(!uda)
+		!temp.Append(!elem.$!uda)
+		!gridRows.Append(!temp)
+	ENDDO
+	
+  !tableName = 'UDA'
+  !nds = object NETDATASOURCE(!tableName, !this.aGridHeadings, !gridRows)
+  !this.grid.bindToDataSource(!nds)
+endmethod
+
+define method .update()
+	IF !this.scope eq 'single' THEN
+		!getUdas = !this.grid.GetColumn(1)
+		!getUdaValues = !this.grid.GetColumn(2)
+		!elem = !this.refElem
+		DO !i index !getUdas
+			!elem.$!getUdas[$!i] = !getUdaValues[!i]
+			HANDLE (2,324)
+				$P ERROR!! CAN NOT SET ATTRIBUTE
+				$P Attribute:  $!getUdas[$!i]
+				$P Value:  $!getUdaValues[$!i]
+			ENDHANDLE
+		ENDDO
+	ELSEIF !this.scope eq 'multi' THEN
+		!gridRows = !this.grid.GetRows()
+		DO !row VALUES !gridRows
+			!pipeName = !row[1]
+			!pipeRef = !pipeName.dbref()
+			HANDLE (2,109)
+				$P ERROR!! NO ELEMENT FOUND WITH THIS NAME: $!pipeName
+				SKIP
+			ELSEHANDLE (2,813)
+				$P ERROR!! NOT A VALID ELEMENT NAME: $!pipeName
+				SKIP
+			ENDHANDLE
+			DO !i FROM 2 TO !row.Size()
+				!val = !row[!i]
+				!attribute = !this.grid.getColumnKey(!i)
+				!pipeRef.$!attribute = !val
+				HANDLE (2,324)
+					$P ERROR!! CAN NOT SET ATTRIBUTE FOR ELEMENT: $!pipeName ; Attribute:  $!attribute ;Value:  $!val
+				ENDHANDLE
+			ENDDO
+		ENDDO
+	ENDIF
+endmethod
+
+define method .SelectCE()
+	!this.refElem = !!CE
+	!this.elementType = !this.refElem.Type
+	!this.RefreshTable()
+endmethod
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+define method .navigate()
+!selection = !this.grid.getSelectedRows()
+$!selection[1][1]
+  Handle ANY
+   return error 1 '$!!error.text'
+  Endhandle
+endmethod
