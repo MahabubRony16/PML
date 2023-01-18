@@ -1,0 +1,30 @@
+define object organize
+	member .unitarr is array
+	member .comparr is array
+endobject
+
+define method .organize(!firstarr is array, !secondarr is array)
+	!this.unitarr	 = !firstarr
+	!this.comparr = !secondarr
+endmethod
+
+define method .replace()
+	DO !comp VALUES !this.comparr
+		!busiUnit = !this.search(!comp.BusinessUnit)
+		!subBusiUnit = !this.search(!comp.SubBusinessUnit)
+		!comp.BusinessUnit = !busiUnit.ID.string()
+		!comp.SubBusinessUnit = !subBusiUnit.ID.string()
+	ENDDO
+endmethod
+
+define method .search(!val is string) is unitt
+	!un = OBJECT UNITT()
+	DO !unit VALUES !this.unitarr
+		IF !unit.Name EQ !val THEN
+			return !unit
+		ENDIF
+	ENDDO
+	$P COULD NOT FIND!!
+	$P $!val
+	return !un
+endmethod 

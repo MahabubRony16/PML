@@ -1,0 +1,47 @@
+define object WriteToXML
+	member .obj is array
+	member .attrib is array
+	member .objWriteFile is file
+endobject
+define method .WriteToXML()
+endmethod
+define method .WriteToXML(!object is any , !path is string)
+	!this.objWriteFile = OBJECT FILE(!path)
+	!this.objWriteFile.Open('OVERWRITE')
+	!this.objWriteFile.WRITERECORD(|<?xml version="1.0" encoding="utf-8"?>|)
+	
+	!this.WriteObject(!object, '')
+	
+	!this.objWriteFile.CLOSE()
+endmethod
+
+define method .WriteObject(!object is any, !level is string)
+	!tag = ''
+	!a = !level
+	
+	DO !attribute VALUES !object.Attributes()
+		!value = !object.$!attribute
+		IF NOT !value.objectType() INSET('ARRAY', 'REAL', 'STRING') THEN
+			IF !value.Unset() THEN
+				skip
+			ENDIF
+			!this.objWriteFile.WRITERECORD(|<$!attribute>|)
+			!tag = !attribute
+			!a = !a + ' '
+			!this.WriteObject(!value, !a)
+			!this.objWriteFile.WRITERECORD(|</$!tag>|)
+		ELSEIF !value.objectType() INSET('ARRAY') THEN
+			!a = !a + ' '
+			!tag = !attribute
+			DO !obj VALUES !value
+				!this.objWriteFile.WRITERECORD(|<$!tag>|)
+				!this.WriteObject(!obj, !a)
+				!this.objWriteFile.WRITERECORD(|</$!tag>|)
+			ENDDO
+		ELSE
+			!line = |$!a| + |<$!attribute>$!value</$!attribute>|
+			!this.objWriteFile.WRITERECORD(!line)
+		ENDIF
+		!value.delete()
+	ENDDO
+endmethod

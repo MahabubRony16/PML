@@ -1,0 +1,16 @@
+define object unitt
+	member .ID is real
+	member .Name is string
+	member .Desc is string
+endobject
+
+-- define method .unit(!idVal is real , !nameVal is string, !descVal is string)
+	-- !this.ID = !idVal
+	-- !this.Name = !nameVal
+	-- !this.Desc = !descVal
+-- endmethod
+
+
+define method .unitt()
+
+endmethod

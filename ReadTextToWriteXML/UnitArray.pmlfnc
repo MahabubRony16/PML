@@ -1,0 +1,44 @@
+define function !!UnitArray() is array
+	!input = 'X:\PDMSUSER\jklhasanma\A\data02.txt'
+	!output = 'X:\PDMSUSER\jklhasanma\A\data02_output.csv'
+	!objfile = OBJECT FILE(!input)
+	!arrayinputfile = !objfile.ReadFile(1000)
+
+	!all = ARRAY()
+	!SubBusiUnit = ARRAY()
+	!SubBusiUnitFulDesc = ARRAY()
+	!BusinesUnit = ARRAY()
+	!BusinesUnitFulDesc = ARRAY()
+
+		do !x from 1 to !arrayinputfile.size()
+			!strline = !arrayinputfile[!x]
+		!val = !strline.AFTER('"').BEFORE('"')
+		IF !strline.MATCHWILD('*(BusinesUnit*') THEN
+			!BusinesUnit.APPEND(!val.Substring(1, !val.Length() - 1 ))
+		ELSEIF !strline.MATCHWILD('*BusinesUnitFulDesc*') THEN
+			!BusinesUnitFulDesc.APPEND(!val.Substring(1, !val.Length() - 2 ))
+				ELSEIF !strline.MATCHWILD('*(SubBusiUnit*') THEN
+			!BusinesUnit.append(!val.Substring(1, !val.Length() - 1 ))
+		ELSEIF !strline.MATCHWILD('*SubBusiUnitFulDesc*') THEN
+			!BusinesUnitFulDesc.APPEND(!val.Substring(1, !val.Length() - 2 ))
+				
+		ENDIF
+		ENDDO
+	!SubBusiUnit = !SubBusiUnit.SortUnique()
+	!SubBusiUnitFulDesc = !SubBusiUnitFulDesc.SortUnique()
+	!BusinesUnit = !BusinesUnit.sortunique()
+	!BusinesUnitFulDesc = !BusinesUnitFulDesc.SortUnique()
+		
+	!unitArray = array()
+	DO !x from 1 to !BusinesUnit.size()
+		!unt = OBJECT UNITT()
+		!unt.ID = !x.real()
+		!unt.Name = !BusinesUnit[$!x]
+		!unt.Desc = !BusinesUnitFulDesc[$!x]
+		!unitArray.Append(!unt)
+	ENDDO
+	$P FINISH!!
+	return !unitArray
+endfunction
+
+

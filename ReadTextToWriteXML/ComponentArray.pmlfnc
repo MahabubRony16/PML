@@ -1,0 +1,66 @@
+define function !!ComponentArray() is array
+	!strFilepath = 'X:\PDMSUSER\jklhasanma\A\data.txt'
+	!strWriteFilepath = 'X:\PDMSUSER\jklhasanma\A\output_XML.csv'
+	!objFile = OBJECT FILE(!strFilepath)
+	!arrFileContent = !objFile.READFILE(3000)
+	
+
+	!all = array()
+	!RpPlc = array()
+	!PRpPlc = array()
+	!DBsetPUBnam = array()
+	!DBsetINTnam = array()
+	!BusinesUnit = array()
+	!BusinesUnitNo = array()
+	!SubBusiUnit = array()
+	!SubBusiUnitNo = array()
+	do !x from 1 to !arrFileContent.size()
+		!strLine = !arrFileContent[!x]
+		!val = !strLine.AFTER('"').BEFORE('"')
+		if !strLine.MATCHWILD('*RpPlc*') then
+			!RpPlc.append(!val)
+			if !strLine.MATCHWILD('*PRpPlc*') then
+				!val = !strLine.AFTER('&&')
+				!val = !val.AFTER('"').BEFORE('"')
+				!PRpPlc.append(!val)
+			else
+				!PRpPlc.append('')
+			endif
+		elseif !strLine.MATCHWILD('*DBsetPUBnam*') then
+			!DBsetPUBnam.append(!val)
+		elseif !strLine.MATCHWILD('*DBsetINTnam*') then
+			if !val eq '' then
+				!DBsetINTnam.append('null')
+			else
+				!DBsetINTnam.append(!val)
+			endif
+		elseif !strLine.MATCHWILD('*BusinesUnit*') then			
+			!BusinesUnit.append(!!GetStrNum(!val)[1])
+			!BusinesUnitNo.append(!!GetStrNum(!val)[2])			
+		elseif !strLine.MATCHWILD('*SubBusiUnit*') then
+			!SubBusiUnit.append(!!GetStrNum(!val)[1])
+			!SubBusiUnitNo.append(!!GetStrNum(!val)[2])
+		endif
+	enddo
+	!compArray = array()
+	do !x from 1 to !RpPlc.size()
+		!comp = OBJECT COMPONENT()
+		!ABC = !PRpPlc[$!x]
+		IF !ABC eq '' THEN
+			!ABC = !RpPlc[$!x]
+		ENDIF
+		!comp.RpPlc = !RpPlc[$!x]
+		!comp.PRpPlc = !ABC			
+		!comp.DBsetPUBnam = !PRpPlc[$!x]
+		!comp.DBsetPUBnam = !DBsetPUBnam[$!x]
+		!comp.DBsetINTnam = !DBsetINTnam[$!x]
+		!comp.BusinessUnit = !BusinesUnit[$!x]
+		!comp.BusinessUnitNo = !BusinesUnitNo[$!x].real()
+		!comp.SubBusinessUnit = !SubBusiUnit[$!x]
+		!comp.SubBusinessUnitNo = !SubBusiUnitNo[$!x].real()
+		
+		!compArray.append(!comp)
+	enddo
+	$P DONE!!
+	return !compArray
+endfunction 

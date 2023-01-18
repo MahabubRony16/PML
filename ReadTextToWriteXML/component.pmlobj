@@ -1,0 +1,18 @@
+define object component
+	member .RpPlc is string
+	member .PRpPlc is string
+	member .DBsetPUBnam is string
+	member .DBsetINTnam is string
+	member .BusinessUnit is string
+	member .BusinessUnitNo is real
+	member .SubBusinessUnit is string
+	member .SubBusinessUnitNo is real
+	
+	member .unt is unitt
+	member .units is array
+endobject
+
+define method .component()
+
+endmethod
+
