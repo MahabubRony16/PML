@@ -1,0 +1,34 @@
+------------------------------------------------------------
+-- FileName    : expungeusers.pmlfnc
+-- Date        : 28/07/2022
+-- Description : Expunge old AVEVA E3D users
+-- Author      : Mahabub Rony
+------------------------------------------------------------
+define function !!expungeusers()
+	!sessions   = SESSIONS
+	!uniqIds = !sessions.evaluate(Object BLOCK(|!sessions[!EvalIndex].UNIQUEID|))
+	!enteredDate = !sessions.evaluate(Object BLOCK(|!sessions[!EvalIndex].ENTERED|))
+
+	do !x indices !enteredDate
+		!now = Object DATETIME()
+		!dateToday = Object DATETIME(!now.year() , !now.month() , !now.date())
+		!year = !now.year()
+		!enteredDate[!x] = !enteredDate[!x] + | $!year|
+		!sessDate = Object DATETIME(!enteredDate[!x])
+		!dateSession = Object DATETIME(!sessDate.year() , !sessDate.month() , !sessDate.date())
+		
+		if not (!dateSession.eq(!dateToday)) then
+			!uniqId = !uniqIds[!x]
+			$P Expunging Session ... $!uniqId
+			EXPUNGE |$!uniqId|
+			handle any
+				$P Unable to expunge session $!uniqId
+				$P Error!! $!!error.text
+			elsehandle none
+				$P Session $!uniqId expunged
+			endhandle
+		endif
+	enddo
+endfunction
+
+
