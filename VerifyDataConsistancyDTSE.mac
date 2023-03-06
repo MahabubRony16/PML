@@ -1,0 +1,40 @@
+!cates = ARRAY()
+<Add collect CATE code here>
+!att = array()
+!att.Append('desc')
+!att.Append('Dkey')
+!att.Append('Ptype')
+!att.Append('Pproperty')
+!att.Append('Dproperty')
+!att.Append('Purpose')
+!att.Append('Dtitle')
+!att.Append('Punits')
+DO !cate VALUES !cates
+	VAR !dtset COLLECT ALL DTSE FOR $!cate
+	VAR !dtatt1 COLLECT ALL DATA FOR $!dtset[1]
+	HANDLE ANY
+		$P NO 1st DTSE $!cate
+		SKIP
+	ENDHANDLE
+	VAR !dtatt2 COLLECT ALL DATA FOR $!dtset[2]
+	HANDLE ANY
+		$P NO 2ND DTSE $!cate
+		SKIP
+	ENDHANDLE
+	DO !x INDEX !dtatt1
+		DO !at VALUES !att
+			!A = !dtatt1[!x].DBREF().$!at
+			!B = !dtatt2[!x].DBREF().$!at
+			HANDLE (2,752) 
+				$P INDEX 8 NOT EXIST: $!cate
+				SKIP
+			ENDHANDLE
+			IF !A NE !B THEN
+				$P $!dtatt2[$!x] $!A ; $!B
+			ENDIF
+			!A.DELETE()
+			!B.DELETE()
+		ENDDO
+	ENDDO
+ENDDO
+
