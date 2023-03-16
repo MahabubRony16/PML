@@ -1,0 +1,63 @@
+-------------------------------------------------------------------
+--
+--  Copyright 2017 to current year. Valmet Technologies.
+--
+--  File:            CreateEnglnk.pmlfnc
+--  Author:          JKLHASANMA
+--  Created:         07-03-2023
+--
+--  Description:     It create the connection between Design and Engineering element
+-----------------------------------------------------------------------------------------------------
+
+define function !!CreateLinkV1(!desElem is Dbref, !engElem is Dbref) is array
+	!desElemRef = !desElem
+	!engElemRef = !engElem
+	!desCymLn = !desElemRef.CMPLNK
+	!engCymLn = !engElemRef.CMPLNK
+	!openToLink = true
+	!message = ''
+	!returnArr = Array()
+	!returnArr[1] = false
+	if !desCymLn.Set()then
+		!conEngElem = !desCymLn.ENGLNK
+		if !conEngElem.Badref() or not !conEngElem.Set() then
+			$!desCymLn
+			Delete CYMLNK
+		else
+			!openToLink = false
+			if !conEngElem eq !engElemRef then
+				!message = |Selected elements are already connected.|
+			else
+				!message = |Design element is already connected with another Engineering element: $!conEngElem.Name|
+			endif
+		endif
+	endif
+	if (!engCymLn.set()) and (!openToLink) then
+		!conDesElem = !engCymLn.DESLNK[1]
+		if  !conDesElem.Badref() or not !conDesElem.Set() then
+			$!engCymLn
+			Delete CYMLNK
+		else
+			!message = |Engineering element is already connected with another Design element: $!conDesElem.Name|
+			!openToLink = false
+		endif
+	endif
+	
+	if !openToLink then
+		!lnkCol  = object COLLECTION()
+		!lnkCol.type('CYMGRP')
+		!linkGroup = !lnkCol.results()[1]
+		$!linkGroup
+		NEW CYMLNK
+		handle any
+			!message = |ERROR!! Unable to create link for $!desElemRef.type $!desElemRef.name|
+		elsehandle none
+			DESLNK $!desElemRef
+			ENGLNK $!engElemRef
+			!message = |Link has been created successfully|
+			!returnArr[1] = true
+		endhandle
+	endif
+	!returnArr[2] = !message
+	return !returnArr
+endfunction
